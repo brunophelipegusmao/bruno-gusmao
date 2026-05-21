@@ -6,5 +6,17 @@
   "author": "@brunogusmao",
   "license": "ISC",
   "private": true,
+  "scripts": {
+    "dev": "pnpm -r --parallel run start:dev",
+    "build": "pnpm -r run build",
+    "start": "pnpm -r --parallel run start",
+    "lint": "pnpm -r run lint",
+    "format": "pnpm -r --if-present run format",
+    "typecheck": "pnpm -r run typecheck",
+    "test": "pnpm -r --if-present run test",
+    "test:watch": "pnpm -r --if-present run test:watch",
+    "test:cov": "pnpm -r --if-present run test:cov",
+    "test:e2e": "pnpm -r --if-present run test:e2e"
+  },
   "packageManager": "pnpm@10.33.4"
 }

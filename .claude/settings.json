@@ -3,7 +3,10 @@
     "allow": [
       "Bash(rm -rf /home/bruno/bruno-gusmao/apps/api/.git && rm -f /home/bruno/bruno-gusmao/apps/api/pnpm-lock.yaml && rm -f /home/bruno/bruno-gusmao/apps/web/pnpm-lock.yaml && rm -f /home/bruno/bruno-gusmao/apps/web/pnpm-workspace.yaml && mv /home/bruno/bruno-gusmao/package /home/bruno/bruno-gusmao/packages && echo \"done\")",
       "Bash(git add *)",
-      "Bash(git reset *)"
+      "Bash(git reset *)",
+      "Bash(pnpm install *)",
+      "Bash(pnpm typecheck *)",
+      "Bash(pnpm lint *)"
     ],
     "additionalDirectories": [
       "/home/bruno/bruno-gusmao/apps/api/.git"
