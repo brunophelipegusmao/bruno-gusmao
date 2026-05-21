@@ -6,7 +6,13 @@
       "Bash(git reset *)",
       "Bash(pnpm install *)",
       "Bash(pnpm typecheck *)",
-      "Bash(pnpm lint *)"
+      "Bash(pnpm lint *)",
+      "Read(//home/bruno/.claude/**)",
+      "Read(//home/bruno/.config/claude/**)",
+      "Bash(find /home/bruno -maxdepth 5 -name \"*shadcn*\" 2>/dev/null | head -10)",
+      "Read(//home/bruno/**)",
+      "Bash(python3 -m json.tool)",
+      "Bash(pnpm tsc *)"
     ],
     "additionalDirectories": [
       "/home/bruno/bruno-gusmao/apps/api/.git"
