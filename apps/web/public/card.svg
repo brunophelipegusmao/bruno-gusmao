@@ -1,0 +1,39 @@
+ <svg
+          viewBox="0 0 200 94"
+          xmlns="http://www.w3.org/2000/svg"
+          width="200"
+          height="94"
+        >
+          <rect width="200" height="94" rx="14" fill="#0D0D0D" />
+          <rect x="20" y="18" width="4" height="18" rx="1.5" fill="#4A9EFF" />
+          <text
+            x="31"
+            y="36"
+            font-family="'Courier New',Courier,monospace"
+            font-size="14"
+            font-weight="400"
+            fill="#fff"
+            letter-spacing="7"
+          >
+            BRUNO
+          </text>
+          <line
+            x1="20"
+            y1="46"
+            x2="180"
+            y2="46"
+            stroke="#4A9EFF"
+            stroke-width="0.75"
+          />
+          <text
+            x="20"
+            y="80"
+            font-family="'Courier New',Courier,monospace"
+            font-size="30"
+            font-weight="700"
+            fill="#F0F0F0"
+            letter-spacing="1"
+          >
+            GUSMÃO
+          </text>
+        </svg>

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 94" role="img" aria-label="Cartao animado Bruno Gusmao">
+  <defs>
+    <clipPath id="card-clip">
+      <rect width="200" height="94" rx="14" ry="14"/>
+    </clipPath>
+  </defs>
+
+  <rect width="200" height="94" rx="14" ry="14" fill="#0d0d0d"/>
+
+  <g clip-path="url(#card-clip)">
+    <line x1="-210" y1="46" x2="0" y2="46" stroke="#4a9eff" stroke-width="0.75">
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        from="0 0"
+        to="212 0"
+        dur="10s"
+        repeatCount="indefinite"/>
+    </line>
+
+    <rect x="90.525" y="8.994" width="4" height="33.367" fill="#4a9eff" opacity="0.9">
+      <animate
+        attributeName="opacity"
+        values="0.9;0;1;0.9"
+        keyTimes="0;0.333;0.666;1"
+        dur="0.6s"
+        repeatCount="indefinite"/>
+    </rect>
+
+    <rect x="174.286" y="52.319" width="4" height="33.367" fill="#4a9eff" opacity="0.9">
+      <animate
+        attributeName="opacity"
+        values="0.9;0;1;0.9"
+        keyTimes="0;0.333;0.666;1"
+        dur="0.6s"
+        repeatCount="indefinite"/>
+    </rect>
+  </g>
+
+  <text
+    x="9.549"
+    y="30.977"
+    fill="#fff"
+    font-family="Roboto, Arial, sans-serif"
+    font-size="15"
+    font-weight="400"
+    letter-spacing="7">
+    BRUNO
+  </text>
+
+  <text
+    x="8.242"
+    y="79.441"
+    fill="#fff"
+    font-family="Roboto, Arial, sans-serif"
+    font-size="30"
+    font-weight="400"
+    letter-spacing="7">
+    GUSM&#195;O
+  </text>
+</svg>
