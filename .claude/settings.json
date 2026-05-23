@@ -12,10 +12,29 @@
       "Bash(find /home/bruno -maxdepth 5 -name \"*shadcn*\" 2>/dev/null | head -10)",
       "Read(//home/bruno/**)",
       "Bash(python3 -m json.tool)",
-      "Bash(pnpm tsc *)"
+      "Bash(pnpm tsc *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('mcpServers', {}\\), indent=2\\)\\)\")",
+      "Bash(find /home/bruno/.claude /usr/local -name \"*playwright*\" -o -name \"*mcp*.json\" 2>/dev/null | head -20)",
+      "Read(//usr/local/**)",
+      "Bash(npx playwright *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('scripts', {}\\), indent=2\\)\\)\")",
+      "Bash(mkdir -p /tmp/about-screenshots && npx playwright screenshot --browser chromium --viewport-size \"1280,800\" \"http://localhost:3000/about\" /tmp/about-screenshots/desktop.png 2>&1)",
+      "Bash(sudo npx playwright install-deps chromium)",
+      "Bash(node -e ' *)",
+      "Bash(find /home/bruno -name \"playwright\" -path \"*/node_modules/.bin/*\" 2>/dev/null | head -5; find /usr -name \"playwright\" 2>/dev/null | head -5)",
+      "Read(//usr/**)",
+      "Bash(ldconfig -p)",
+      "Bash(dpkg -l)",
+      "Bash(apt list *)",
+      "Bash(apt-get install *)",
+      "Bash(curl -s http://localhost:3000/about)",
+      "Bash(python3 -c ' *)",
+      "Bash(xargs ls -la)",
+      "Bash(xargs ls)"
     ],
     "additionalDirectories": [
-      "/home/bruno/bruno-gusmao/apps/api/.git"
+      "/home/bruno/bruno-gusmao/apps/api/.git",
+      "/tmp"
     ]
   }
 }

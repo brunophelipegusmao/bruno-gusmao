@@ -22,26 +22,25 @@ export default function MobileMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger
         aria-label="Abrir menu"
-        className="flex items-center gap-2 bg-foreground text-secondary font-heading uppercase text-sm px-3 py-2.5 rounded-xl hover:bg-foreground/80 transition-colors outline-none"
+        className="flex items-center justify-center w-10 h-10 rounded-xl border border-foreground/20 bg-foreground/5 hover:bg-foreground/10 transition-colors outline-none"
       >
-        <Menu className="w-4 h-4" />
-        Menu
+        <Menu className="w-5 h-5" />
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
         align="end"
         sideOffset={8}
-        className="min-w-52 flex flex-col gap-1.5 rounded-xl border border-border bg-background p-2"
+        className="min-w-48 flex flex-col gap-0.5 rounded-2xl border border-border bg-background/80 backdrop-blur-md p-2 shadow-lg"
       >
         {navItems.map((item) => (
           <DropdownMenuItem
             key={item.href}
             asChild
-            className="rounded-xl p-0 focus:bg-transparent"
+            className="rounded-xl p-0 focus:bg-foreground/5 focus:text-foreground"
           >
             <Link
               href={item.href}
-              className="flex w-full items-center justify-center bg-foreground text-secondary font-heading uppercase text-base px-3 py-3 rounded-xl hover:bg-foreground/80 transition-colors"
+              className="flex w-full items-center px-4 py-3 font-heading uppercase text-sm tracking-wide text-foreground hover:bg-foreground/5 rounded-xl transition-colors"
             >
               {item.label}
             </Link>
