@@ -1,6 +1,5 @@
 import { AnimatedList } from "@/components/ui/animated-list";
 import { TypingAnimation } from "@/components/ui/typing-animation";
-import { image } from "motion/react-client";
 
 const itensList = [
   { label: "JavaScript", image: "icons/javascript.svg" },

@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { AnimatedGridPattern } from "@/components/ui/animated-grid-pattern";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -25,7 +26,17 @@ export default function RootLayout({
       className={cn("h-full antialiased w-full", "font-sans", geist.variable)}
     >
       <body className="min-h-screen flex flex-col items-center">
-        <div className="w-full sm:min-w-[85%] md:min-w-[80%] min-h-screen">
+        <AnimatedGridPattern
+          numSquares={30}
+          maxOpacity={0.1}
+          duration={3}
+          repeatDelay={1}
+          className={cn(
+            "mask-[radial-gradient(800px_circle_at_center,white,transparent)]",
+            // "inset-x-0 inset-y-[-30%] min-h-screen min-w-screen skew-y-12",
+          )}
+        />
+        <div className="w-full sm:min-w-[85%] md:min-w-[80%] max-h-screen">
           <Header />
           {children}
         </div>
