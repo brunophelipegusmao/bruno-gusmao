@@ -7,6 +7,7 @@ import {
   Landmark,
   Building2,
 } from "lucide-react";
+import DownloadButton from "@/components/downloaderButton";
 
 type TimelineItemType = {
   year: string;
@@ -72,7 +73,6 @@ const timelineItems: TimelineItemType[] = [
 export default function About() {
   return (
     <main className="flex flex-col justify-center items-center p-6 md:p-12 gap-3.5">
-      {/* Bio + Foto */}
       <section className="flex flex-col md:flex-row w-full items-center justify-center gap-8 p-3">
         <article className="w-full md:w-1/3 p-3 flex flex-col items-start justify-start gap-4">
           <h1 className="text-3xl font-bold text-left pb-2">
@@ -111,7 +111,10 @@ export default function About() {
         </div>
       </section>
 
-      {/* Linha do tempo */}
+      <div>
+        <DownloadButton />
+      </div>
+
       <section className="w-full px-3 pb-8">
         <h2 className="font-heading uppercase text-xl font-bold text-center mb-14 tracking-widest">
           Trajetória
@@ -132,7 +135,7 @@ export default function About() {
                   <div className="hidden md:grid grid-cols-[1fr_9rem_1fr] items-center gap-4">
                     <div className="flex justify-end">
                       <div
-                        className={`text-right max-w-[260px] ${!isEven ? "invisible" : ""}`}
+                        className={`text-right max-w-65 ${!isEven ? "invisible" : ""}`}
                       >
                         <p className="font-heading uppercase text-xs font-bold tracking-wide">
                           {item.title}
@@ -165,8 +168,6 @@ export default function About() {
                       </div>
                     </div>
                   </div>
-
-                  {/* Mobile — tudo à direita da linha */}
                   <div className="flex md:hidden items-start gap-4 pl-14">
                     <div className="absolute left-0 top-0 w-10 h-10 rounded-full bg-foreground text-secondary flex items-center justify-center z-10 shrink-0">
                       <item.Icon className="w-4 h-4" />

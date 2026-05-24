@@ -11,7 +11,7 @@ const navItems = [
 
 export default function NavMenu() {
   return (
-    <nav>
+    <nav className="max-w-full flex items-center gap-6">
       {/* Desktop */}
       <ul className="hidden md:flex gap-4 items-center">
         {navItems.map((item) => (
