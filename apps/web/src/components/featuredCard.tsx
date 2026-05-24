@@ -8,10 +8,12 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import { ShineBorder } from "./ui/shine-border";
 
 export default function FeaturedCard() {
   return (
     <Card className="relative w-1/2 mx-auto pt-0 bg-card-foreground">
+      <ShineBorder shineColor={["#e2e8f0", "#818cf8", "#c4b5fd"]} className="z-40" />
       <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
       <img
         src="/projects_mock/jm-frontend.webp"

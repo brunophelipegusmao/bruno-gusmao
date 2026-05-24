@@ -8,6 +8,15 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 import { Button } from "@base-ui/react";
 
@@ -39,6 +48,45 @@ export default function Projects() {
           <FeaturedCard />
         </div>
       </section>
+
+      <section className="w-full px-3 pb-8 grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Card> </Card>
+        <Card> </Card>
+        <Card> </Card>
+        <Card> </Card>
+        <Card> </Card>
+        <Card> </Card>
+        <Card> </Card>
+        <Card> </Card>
+        <Card> </Card>
+      </section>
+      <div className="py-8">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious href="#" />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">1</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#" isActive>
+                2
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">3</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext href="#" />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
+      <footer className="h-30 bg-amber-200">teste</footer>
     </main>
   );
 }
