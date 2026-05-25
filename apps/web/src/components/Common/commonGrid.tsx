@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Button } from "@base-ui/react/button";
 import CommonCard from "@/components/Common/commonCard";
 import {
@@ -72,14 +73,22 @@ export default function CommonGrid({ items }: CommonGridProps) {
             description={item.description}
             badges={item.badges}
           >
-            {item.actions.map((action) => (
-              <Button
-                key={action.label}
-                className="bg-background text-foreground py-3 px-2 rounded-xl"
-              >
-                {action.label}
-              </Button>
-            ))}
+            {item.actions.map((action) =>
+              action.href ? (
+                <Link key={action.label} href={action.href}>
+                  <Button className="bg-background text-foreground py-3 px-2 rounded-xl">
+                    {action.label}
+                  </Button>
+                </Link>
+              ) : (
+                <Button
+                  key={action.label}
+                  className="bg-background text-foreground py-3 px-2 rounded-xl"
+                >
+                  {action.label}
+                </Button>
+              )
+            )}
           </CommonCard>
         ))}
       </section>

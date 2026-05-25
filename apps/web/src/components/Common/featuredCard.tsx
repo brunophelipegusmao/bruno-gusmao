@@ -19,13 +19,13 @@ export default function FeaturedCard({
   children,
 }: FeaturedCardProps) {
   return (
-    <Card className="relative w-full flex flex-row overflow-hidden pt-0 bg-secondary">
+    <Card className="relative w-full flex flex-col md:flex-row overflow-hidden pt-0 bg-secondary">
       <ShineBorder
         shineColor={["#e2e8f0", "#818cf8", "#c4b5fd"]}
         className="z-40"
       />
 
-      <div className="relative w-1/2 shrink-0">
+      <div className="relative w-full md:w-1/2 shrink-0 aspect-video md:aspect-auto">
         <div className="absolute inset-0 z-10 bg-black/20" />
         <img
           src={image.src}

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Footer from "@/components/Common/footer";
 import {
   Briefcase,
   GraduationCap,
@@ -190,6 +191,8 @@ export default function About() {
           </ul>
         </div>
       </section>
+
+      <Footer />
     </main>
   );
 }

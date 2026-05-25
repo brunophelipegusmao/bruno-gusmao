@@ -1,6 +1,7 @@
 import { Button } from "@base-ui/react/button";
 import FeaturedCard from "@/components/Common/featuredCard";
 import CommonGrid, { GridItem } from "@/components/Common/commonGrid";
+import Footer from "@/components/Common/footer";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 
 const projects: GridItem[] = Array.from({ length: 9 }, (_, i) => ({
@@ -58,7 +59,7 @@ export default function Projects() {
 
       <CommonGrid items={projects} />
 
-      <footer className="h-30 bg-amber-200">teste</footer>
+      <Footer />
     </main>
   );
 }

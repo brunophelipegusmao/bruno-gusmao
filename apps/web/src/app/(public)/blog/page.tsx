@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { Button } from "@base-ui/react/button";
 import FeaturedCard from "@/components/Common/featuredCard";
+import Footer from "@/components/Common/footer";
 import CommonGrid, { GridItem } from "@/components/Common/commonGrid";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 
@@ -9,7 +11,7 @@ const posts: GridItem[] = Array.from({ length: 9 }, (_, i) => ({
   title: "Título do Post",
   description: "Descrição breve do artigo, destacando os principais tópicos abordados.",
   badges: ["NestJS", "TypeScript"],
-  actions: [{ label: "Ler Artigo" }],
+  actions: [{ label: "Ler Artigo", href: "/blog/api-rest-escalavel-nestjs-drizzleorm" }],
 }));
 
 export default function Blog() {
@@ -43,16 +45,18 @@ export default function Blog() {
             description="Um guia prático sobre como estruturar projetos backend de forma escalável, com foco em boas práticas de arquitetura, validação e performance em produção."
             badges={["NestJS", "DrizzleORM", "PostgreSQL", "TypeScript"]}
           >
-            <Button className="bg-background text-foreground py-3 px-4 rounded-xl">
-              Ler Artigo
-            </Button>
+            <Link href="/blog/api-rest-escalavel-nestjs-drizzleorm">
+              <Button className="bg-background text-foreground py-3 px-4 rounded-xl">
+                Ler Artigo
+              </Button>
+            </Link>
           </FeaturedCard>
         </div>
       </section>
 
       <CommonGrid items={posts} />
 
-      <footer className="h-30 bg-amber-200">teste</footer>
+      <Footer />
     </main>
   );
 }
