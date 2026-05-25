@@ -1,24 +1,19 @@
-import FeaturedCard from "@/components/featuredCard";
-import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardHeader,
-  CardAction,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from "@/components/ui/card";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import { Button } from "@base-ui/react/button";
+import FeaturedCard from "@/components/Common/featuredCard";
+import CommonGrid, { GridItem } from "@/components/Common/commonGrid";
 import { TypingAnimation } from "@/components/ui/typing-animation";
-import { Button } from "@base-ui/react";
+
+const projects: GridItem[] = Array.from({ length: 9 }, (_, i) => ({
+  id: i + 1,
+  image: { src: "https://picsum.photos/seed/picsum/200/300", alt: "Project cover" },
+  title: "Projeto X",
+  description: "Descrição breve do projeto, destacando as tecnologias utilizadas e os desafios enfrentados.",
+  badges: ["NextJs"],
+  actions: [
+    { label: "Ver Projeto" },
+    { label: "Repositório" },
+  ],
+}));
 
 export default function Projects() {
   return (
@@ -45,47 +40,24 @@ export default function Projects() {
         </TypingAnimation>
 
         <div className="mt-6 py-6">
-          <FeaturedCard />
+          <FeaturedCard
+            image={{ src: "/projects_mock/jm-frontend.webp", alt: "Juliana Martins - Fitness Studio" }}
+            title="Juliana Martins - Fitness Studio"
+            description="Sistema personalizado para estudo com foco no bem estar e emagrecimento: controle de alunos, check-ins, gestão financeira e dashboards por perfil."
+            badges={["NextJs", "NestJs", "TailwindCSS", "TypeScript", "DrizzleORM", "PostgreSQL", "BetterAuth", "Zod", "Cloudinary"]}
+          >
+            <Button className="bg-background text-foreground py-3 px-4 rounded-xl">
+              Ver Projeto
+            </Button>
+            <Button className="bg-background text-foreground py-3 px-4 rounded-xl">
+              Repositório
+            </Button>
+          </FeaturedCard>
         </div>
       </section>
 
-      <section className="w-full px-3 pb-8 grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Card> </Card>
-        <Card> </Card>
-        <Card> </Card>
-        <Card> </Card>
-        <Card> </Card>
-        <Card> </Card>
-        <Card> </Card>
-        <Card> </Card>
-        <Card> </Card>
-      </section>
-      <div className="py-8">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#" isActive>
-                2
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+      <CommonGrid items={projects} />
+
       <footer className="h-30 bg-amber-200">teste</footer>
     </main>
   );

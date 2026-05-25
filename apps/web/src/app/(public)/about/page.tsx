@@ -7,7 +7,7 @@ import {
   Landmark,
   Building2,
 } from "lucide-react";
-import DownloadButton from "@/components/downloaderButton";
+import DownloadButton from "@/components/Projects/downloaderButton";
 
 type TimelineItemType = {
   year: string;
