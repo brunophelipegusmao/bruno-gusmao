@@ -33,7 +33,10 @@
       "Bash(xargs ls)",
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); deps={**d.get\\('dependencies',{}\\), **d.get\\('devDependencies',{}\\)}; [print\\(k,v\\) for k,v in deps.items\\(\\) if 'radix' in k or 'base-ui' in k or 'dialog' in k]\")",
       "Bash(pnpm --filter api add @nestjs/config drizzle-orm postgres zod better-auth @nestjs/swagger @fastify/swagger @fastify/swagger-ui)",
-      "Bash(pnpm --filter api add -D drizzle-kit)"
+      "Bash(pnpm --filter api add -D drizzle-kit)",
+      "Bash(pnpm --filter api add drizzle-zod)",
+      "Bash(pnpm --filter api add -D @types/node fastify)",
+      "Bash(pnpm --filter api typecheck)"
     ],
     "additionalDirectories": [
       "/home/bruno/bruno-gusmao/apps/api/.git",

@@ -4,6 +4,12 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@types/node':
+      specifier: ^24.12.4
+      version: 24.12.4
+
 importers:
 
   .: {}
@@ -37,6 +43,9 @@ importers:
       drizzle-orm:
         specifier: ^0.45.2
         version: 0.45.2(kysely@0.28.17)(postgres@3.4.9)
+      drizzle-zod:
+        specifier: ^0.8.3
+        version: 0.8.3(drizzle-orm@0.45.2(kysely@0.28.17)(postgres@3.4.9))(zod@4.4.3)
       postgres:
         specifier: ^3.4.9
         version: 3.4.9
@@ -75,7 +84,7 @@ importers:
         specifier: ^30.0.0
         version: 30.0.0
       '@types/node':
-        specifier: ^24.0.0
+        specifier: 'catalog:'
         version: 24.12.4
       '@types/supertest':
         specifier: ^7.0.0
@@ -92,6 +101,9 @@ importers:
       eslint-plugin-prettier:
         specifier: ^5.2.2
         version: 5.5.5(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))(prettier@3.8.3)
+      fastify:
+        specifier: ^5.8.5
+        version: 5.8.5
       globals:
         specifier: ^17.0.0
         version: 17.6.0
@@ -3151,6 +3163,12 @@ packages:
         optional: true
       sqlite3:
         optional: true
+
+  drizzle-zod@0.8.3:
+    resolution: {integrity: sha512-66yVOuvGhKJnTdiqj1/Xaaz9/qzOdRJADpDa68enqS6g3t0kpNkwNYjUuaeXgZfO/UWuIM9HIhSlJ6C5ZraMww==}
+    peerDependencies:
+      drizzle-orm: '>=0.36.0'
+      zod: ^3.25.0 || ^4.0.0
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -8566,6 +8584,11 @@ snapshots:
     optionalDependencies:
       kysely: 0.28.17
       postgres: 3.4.9
+
+  drizzle-zod@0.8.3(drizzle-orm@0.45.2(kysely@0.28.17)(postgres@3.4.9))(zod@4.4.3):
+    dependencies:
+      drizzle-orm: 0.45.2(kysely@0.28.17)(postgres@3.4.9)
+      zod: 4.4.3
 
   dunder-proto@1.0.1:
     dependencies:
