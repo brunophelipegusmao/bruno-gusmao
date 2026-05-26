@@ -15,6 +15,27 @@
       "when": 1779757122835,
       "tag": "0001_steep_venus",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779759000997,
+      "tag": "0002_colossal_james_howlett",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1779760902325,
+      "tag": "0003_wooden_wolverine",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1779761173491,
+      "tag": "0004_useful_mojo",
+      "breakpoints": true
     }
   ]
 }

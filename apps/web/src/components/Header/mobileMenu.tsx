@@ -35,15 +35,15 @@ export default function MobileMenu() {
         {navItems.map((item) => (
           <DropdownMenuItem
             key={item.href}
-            asChild
+            render={
+              <Link
+                href={item.href}
+                className="flex w-full items-center px-4 py-3 font-heading uppercase text-sm tracking-wide text-foreground hover:bg-foreground/5 rounded-xl transition-colors"
+              />
+            }
             className="rounded-xl p-0 focus:bg-foreground/5 focus:text-foreground"
           >
-            <Link
-              href={item.href}
-              className="flex w-full items-center px-4 py-3 font-heading uppercase text-sm tracking-wide text-foreground hover:bg-foreground/5 rounded-xl transition-colors"
-            >
-              {item.label}
-            </Link>
+            {item.label}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

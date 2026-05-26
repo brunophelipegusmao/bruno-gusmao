@@ -1,0 +1,1 @@
+ALTER TABLE "kanban_tasks" ADD COLUMN "color" varchar(50);

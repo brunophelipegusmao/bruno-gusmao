@@ -1,7 +1,8 @@
-import { pgTable, uuid, varchar, text, timestamp } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, varchar, text, timestamp, boolean } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { badges } from './badges';
+import { KANBAN_STATUSES } from './projects';
 
 export const posts = pgTable('posts', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -19,6 +20,8 @@ export const posts = pgTable('posts', {
   badge3Id: uuid('badge3_id').references(() => badges.id, {
     onDelete: 'set null',
   }),
+  visible: boolean('visible').notNull().default(true),
+  kanbanStatus: varchar('kanban_status', { length: 50 }).notNull().default('backlog'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
@@ -36,6 +39,8 @@ export const insertPostSchema = createInsertSchema(posts, {
   badge1Id: z.string().uuid().optional().nullable(),
   badge2Id: z.string().uuid().optional().nullable(),
   badge3Id: z.string().uuid().optional().nullable(),
+  visible: z.boolean().optional(),
+  kanbanStatus: z.enum(KANBAN_STATUSES).optional(),
 }).omit({ id: true, createdAt: true, updatedAt: true });
 
 export const updatePostSchema = insertPostSchema.partial();

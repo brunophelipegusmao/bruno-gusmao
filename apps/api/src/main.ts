@@ -4,6 +4,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { WsAdapter } from '@nestjs/platform-ws';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cors from '@fastify/cors';
 import { AppModule } from './app.module';
@@ -21,6 +22,7 @@ async function bootstrap() {
     credentials: true,
   });
 
+  app.useWebSocketAdapter(new WsAdapter(app));
   app.setGlobalPrefix('api');
   app.enableShutdownHooks();
 
