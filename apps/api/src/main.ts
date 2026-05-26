@@ -5,6 +5,7 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import cors from '@fastify/cors';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -14,6 +15,11 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter({ logger: false }),
   );
+
+  await app.register(cors, {
+    origin: process.env.WEB_URL ?? 'http://localhost:3000',
+    credentials: true,
+  });
 
   app.setGlobalPrefix('api');
   app.enableShutdownHooks();

@@ -2,11 +2,20 @@ import { All, Controller, Req, Res } from '@nestjs/common';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { auth } from './auth';
 
+const SKIP_HEADERS = new Set([
+  'transfer-encoding',
+  'access-control-allow-origin',
+  'access-control-allow-credentials',
+  'access-control-allow-methods',
+  'access-control-allow-headers',
+]);
+
 @Controller('auth')
 export class AuthController {
   @All('*')
   async handler(@Req() req: FastifyRequest, @Res() reply: FastifyReply) {
-    const url = new URL(req.url, `${req.protocol}://${req.hostname}`);
+    const baseUrl = process.env.BETTER_AUTH_URL ?? 'http://localhost:3001';
+    const url = new URL(req.url, baseUrl);
 
     const headers = new Headers();
     Object.entries(req.headers).forEach(([key, value]) => {
@@ -26,9 +35,24 @@ export class AuthController {
 
     const response = await auth.handler(request);
 
-    reply.status(response.status);
-    response.headers.forEach((value, key) => reply.header(key, value));
+    response.headers.forEach((value, key) => {
+      if (!SKIP_HEADERS.has(key.toLowerCase())) {
+        reply.header(key, value);
+      }
+    });
 
-    reply.send(await response.text());
+    reply.status(response.status);
+
+    if (response.status >= 300 && response.status < 400) {
+      const location = response.headers.get('location');
+      if (location) return reply.redirect(location, response.status as any);
+    }
+
+    const contentType = response.headers.get('content-type') ?? '';
+    if (contentType.includes('application/json')) {
+      return reply.send(await response.json());
+    }
+
+    return reply.send(await response.text());
   }
 }
