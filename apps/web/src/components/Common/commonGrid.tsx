@@ -13,6 +13,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import type { BadgeData } from "./featuredCard";
 
 export interface GridItemAction {
   label: string;
@@ -20,11 +21,11 @@ export interface GridItemAction {
 }
 
 export interface GridItem {
-  id: number;
-  image: { src: string; alt: string };
+  id: string;
+  image?: { src: string; alt: string } | null;
   title: string;
   description: string;
-  badges: string[];
+  badges: BadgeData[];
   actions: GridItemAction[];
 }
 
@@ -59,8 +60,9 @@ export default function CommonGrid({ items }: CommonGridProps) {
 
   const start = (currentPage - 1) * cardsPerPage;
   const visibleItems = items.slice(start, start + cardsPerPage);
-
   const goTo = (p: number) => setCurrentPage(Math.min(Math.max(1, p), totalPages));
+
+  if (items.length === 0) return null;
 
   return (
     <>
@@ -81,10 +83,7 @@ export default function CommonGrid({ items }: CommonGridProps) {
                   </Button>
                 </Link>
               ) : (
-                <Button
-                  key={action.label}
-                  className="bg-background text-foreground py-3 px-2 rounded-xl"
-                >
+                <Button key={action.label} className="bg-background text-foreground py-3 px-2 rounded-xl">
                   {action.label}
                 </Button>
               )
@@ -93,56 +92,54 @@ export default function CommonGrid({ items }: CommonGridProps) {
         ))}
       </section>
 
-      <div className="py-8">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                onClick={(e) => { e.preventDefault(); goTo(currentPage - 1); }}
-                aria-disabled={currentPage === 1}
-                className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-              />
-            </PaginationItem>
+      {totalPages > 1 && (
+        <div className="py-8">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); goTo(currentPage - 1); }}
+                  aria-disabled={currentPage === 1}
+                  className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
 
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => {
-              const showPage = p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1;
-              const showEllipsisBefore = p === currentPage - 2 && currentPage > 3;
-              const showEllipsisAfter = p === currentPage + 2 && currentPage < totalPages - 2;
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => {
+                const showPage = p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1;
+                const showEllipsisBefore = p === currentPage - 2 && currentPage > 3;
+                const showEllipsisAfter = p === currentPage + 2 && currentPage < totalPages - 2;
 
-              if (showEllipsisBefore || showEllipsisAfter) {
+                if (showEllipsisBefore || showEllipsisAfter) {
+                  return <PaginationItem key={`ellipsis-${p}`}><PaginationEllipsis /></PaginationItem>;
+                }
+                if (!showPage) return null;
+
                 return (
-                  <PaginationItem key={`ellipsis-${p}`}>
-                    <PaginationEllipsis />
+                  <PaginationItem key={p}>
+                    <PaginationLink
+                      href="#"
+                      onClick={(e) => { e.preventDefault(); goTo(p); }}
+                      isActive={p === currentPage}
+                    >
+                      {p}
+                    </PaginationLink>
                   </PaginationItem>
                 );
-              }
-              if (!showPage) return null;
+              })}
 
-              return (
-                <PaginationItem key={p}>
-                  <PaginationLink
-                    href="#"
-                    onClick={(e) => { e.preventDefault(); goTo(p); }}
-                    isActive={p === currentPage}
-                  >
-                    {p}
-                  </PaginationLink>
-                </PaginationItem>
-              );
-            })}
-
-            <PaginationItem>
-              <PaginationNext
-                href="#"
-                onClick={(e) => { e.preventDefault(); goTo(currentPage + 1); }}
-                aria-disabled={currentPage === totalPages}
-                className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); goTo(currentPage + 1); }}
+                  aria-disabled={currentPage === totalPages}
+                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </>
   );
 }

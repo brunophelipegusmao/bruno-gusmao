@@ -41,7 +41,7 @@ export default function Footer() {
           <span className="font-heading font-semibold text-primary text-2xl tracking-tight">
             Bruno Gusmão_
           </span>
-          <p className="text-sm text-muted-foreground">Desenvolvedor & Advogado</p>
+          <p className="text-sm text-muted-foreground">Desenvolvedor & <Link href="https://www.mulimassociados.adv.br" target="_blank" rel="noopener noreferrer">Advogado</Link></p>
         </div>
 
         <div className="flex flex-col gap-3">
