@@ -25,7 +25,6 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { signOut, useSession } from "@/lib/auth-client";
-import { TypingAnimation } from "../ui/typing-animation";
 
 const NAV_PAINEL = [
   { label: "Dashboard", href: "/ControlPanel", icon: LayoutDashboard },
@@ -58,9 +57,9 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader className="px-3 py-4">
         <div className="flex items-center gap-2 px-1">
-          <TypingAnimation className="font-heading text-primary text-base tracking-widest group-data-[collapsible=icon]:hidden">
-              PAINEL_
-          </TypingAnimation>
+          <span className="font-heading text-primary text-base tracking-widest group-data-[collapsible=icon]:hidden">
+            PAINEL_
+          </span>
         </div>
       </SidebarHeader>
 

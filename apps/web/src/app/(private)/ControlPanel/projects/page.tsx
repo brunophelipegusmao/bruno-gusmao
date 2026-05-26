@@ -38,7 +38,7 @@ export default async function ProjectsPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <PanelHeader title="PROJETOS_" description="Cadastre e gerencie seus projetos" />
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-3 sm:p-6">
         <ProjectsTable initialProjects={projects} badges={badges} />
       </main>
     </div>

@@ -117,7 +117,7 @@ function TaskDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogPopup className="max-w-md w-full">
+      <DialogPopup className="w-full max-w-md mx-4 sm:mx-auto">
         <DialogHeader>
           <DialogTitle>{mode === "create" ? "NOVA TAREFA_" : "EDITAR TAREFA_"}</DialogTitle>
           <DialogCloseButton />
@@ -323,11 +323,15 @@ export function KanbanBoard({ initialTasks }: { initialTasks: KanbanTask[] }) {
   };
 
   const handleDelete = async (id: string) => {
-    const res = await fetch(`${API}/api/kanban-tasks/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
-    if (res.ok) setTasks((prev) => prev.filter((t) => t.id !== id));
+    try {
+      const res = await fetch(`${API}/api/kanban-tasks/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (res.ok) setTasks((prev) => prev.filter((t) => t.id !== id));
+    } catch (err) {
+      console.error("Erro ao excluir tarefa:", err);
+    }
   };
 
   const editInitial: TaskForm = editTarget
@@ -346,7 +350,7 @@ export function KanbanBoard({ initialTasks }: { initialTasks: KanbanTask[] }) {
           {COLUMNS.map((col) => {
             const colTasks = tasks.filter((t) => t.kanbanStatus === col.id);
             return (
-              <div key={col.id} className="flex flex-col gap-3 w-72 shrink-0">
+              <div key={col.id} className="flex flex-col gap-3 w-60 sm:w-72 shrink-0">
                 <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center gap-2">
                     <span className={`size-2 rounded-full shrink-0 ${col.dot}`} />

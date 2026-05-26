@@ -61,12 +61,12 @@ export default async function ControlPanel() {
         <h1 className="font-heading text-primary text-2xl">DASHBOARD_</h1>
       </header>
 
-      <main className="flex-1 p-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <main className="flex-1 p-3 sm:p-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {stats.map(({ label, icon: Icon, total, sub }) => (
             <div
               key={label}
-              className="flex flex-col gap-3 p-5 rounded-xl bg-secondary border border-border"
+              className="flex flex-col gap-2 sm:gap-3 p-4 sm:p-5 rounded-xl bg-secondary border border-border"
             >
               <div className="flex items-center justify-between">
                 <span className="font-heading uppercase text-xs text-muted-foreground tracking-wide">
@@ -75,7 +75,7 @@ export default async function ControlPanel() {
                 <Icon className="size-4 text-muted-foreground" />
               </div>
               <div className="flex flex-col gap-0.5">
-                <span className="font-heading text-4xl text-primary">
+                <span className="font-heading text-3xl sm:text-4xl text-primary">
                   {total}
                 </span>
                 <span className="text-xs text-muted-foreground">{sub}</span>

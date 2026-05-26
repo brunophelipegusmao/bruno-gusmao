@@ -25,7 +25,7 @@ export default async function BadgesPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <PanelHeader title="BADGES_" description="Gerencie as tags de tecnologia" />
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-3 sm:p-6">
         <BadgesTable initialBadges={badges} />
       </main>
     </div>

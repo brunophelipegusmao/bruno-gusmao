@@ -179,21 +179,24 @@ export function ProjectsTable({
   return (
     <>
       <div className="flex items-center justify-between mb-5">
-        <p className="text-sm text-muted-foreground">{projects.length} projeto{projects.length !== 1 ? "s" : ""} cadastrado{projects.length !== 1 ? "s" : ""}</p>
+        <p className="text-sm text-muted-foreground">
+          {projects.length} projeto{projects.length !== 1 ? "s" : ""} cadastrado{projects.length !== 1 ? "s" : ""}
+        </p>
         <Button onClick={openCreate} className="font-heading uppercase gap-2 text-xs">
           <Plus className="size-3.5" />
-          Novo Projeto
+          <span className="hidden sm:inline">Novo Projeto</span>
+          <span className="sm:hidden">Novo</span>
         </Button>
       </div>
 
-      <div className="rounded-2xl border border-border overflow-hidden">
-        <Table>
+      <div className="rounded-2xl border border-border overflow-hidden overflow-x-auto">
+        <Table className="min-w-130">
           <TableHeader>
             <TableRow className="bg-secondary/50">
               <TableHead className="font-heading text-xs uppercase tracking-widest">Nome</TableHead>
-              <TableHead className="font-heading text-xs uppercase tracking-widest">Summary</TableHead>
-              <TableHead className="font-heading text-xs uppercase tracking-widest">Badges</TableHead>
-              <TableHead className="font-heading text-xs uppercase tracking-widest">Status</TableHead>
+              <TableHead className="font-heading text-xs uppercase tracking-widest hidden md:table-cell">Summary</TableHead>
+              <TableHead className="font-heading text-xs uppercase tracking-widest hidden lg:table-cell">Badges</TableHead>
+              <TableHead className="font-heading text-xs uppercase tracking-widest hidden sm:table-cell">Status</TableHead>
               <TableHead className="font-heading text-xs uppercase tracking-widest">Visível</TableHead>
               <TableHead className="font-heading text-xs uppercase tracking-widest text-right">Ações</TableHead>
             </TableRow>
@@ -220,15 +223,15 @@ export function ProjectsTable({
                     <span className="text-xs text-muted-foreground font-mono">{p.slug}</span>
                   </div>
                 </TableCell>
-                <TableCell className="text-muted-foreground text-xs max-w-48 truncate">{p.summary}</TableCell>
-                <TableCell>
+                <TableCell className="text-muted-foreground text-xs max-w-48 truncate hidden md:table-cell">{p.summary}</TableCell>
+                <TableCell className="hidden lg:table-cell">
                   <div className="flex flex-wrap gap-1">
                     {getBadgesForProject(p).map((b) => (
                       <CommonBadge key={b.id} name={b.name} bgColor={b.bgColor} textColor={b.textColor} />
                     ))}
                   </div>
                 </TableCell>
-                <TableCell>
+                <TableCell className="hidden sm:table-cell">
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-heading uppercase tracking-wide ${KANBAN_COLORS[p.kanbanStatus] ?? "text-muted-foreground"}`}>
                     {KANBAN_LABELS[p.kanbanStatus] ?? p.kanbanStatus}
                   </span>
@@ -236,13 +239,15 @@ export function ProjectsTable({
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <Switch checked={p.visible} onCheckedChange={() => toggleVisible(p)} />
-                    {p.visible
-                      ? <Eye className="size-3.5 text-emerald-400" />
-                      : <EyeOff className="size-3.5 text-muted-foreground" />}
+                    <span className="hidden sm:block">
+                      {p.visible
+                        ? <Eye className="size-3.5 text-emerald-400" />
+                        : <EyeOff className="size-3.5 text-muted-foreground" />}
+                    </span>
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
-                  <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex justify-end gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                     <Button variant="ghost" size="icon" className="size-8" onClick={() => openEdit(p)}>
                       <Pencil className="size-3.5" />
                     </Button>
@@ -258,15 +263,14 @@ export function ProjectsTable({
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogPopup className="max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <DialogPopup className="w-full max-w-2xl mx-4 sm:mx-auto max-h-[90dvh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{editId ? "EDITAR PROJETO_" : "NOVO PROJETO_"}</DialogTitle>
             <DialogCloseButton />
           </DialogHeader>
 
           <div className="flex flex-col gap-5 py-2">
-            {/* Nome + Slug */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
                 <FieldLabel>Nome</FieldLabel>
                 <FieldInput
@@ -285,7 +289,6 @@ export function ProjectsTable({
               </div>
             </div>
 
-            {/* Summary */}
             <div className="flex flex-col gap-1.5">
               <FieldLabel>Summary <span className="normal-case font-sans tracking-normal">(máx. 300 chars)</span></FieldLabel>
               <input
@@ -298,14 +301,12 @@ export function ProjectsTable({
               <span className="text-xs text-muted-foreground text-right">{form.summary.length}/300</span>
             </div>
 
-            {/* Image */}
             <div className="flex flex-col gap-1.5">
               <FieldLabel>URL da Imagem</FieldLabel>
               <FieldInput value={form.image} onChange={(v) => set("image", v)} placeholder="https://..." />
             </div>
 
-            {/* URLs */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
                 <FieldLabel>URL do Projeto</FieldLabel>
                 <div className="relative">
@@ -332,10 +333,9 @@ export function ProjectsTable({
               </div>
             </div>
 
-            {/* Badges */}
             <div className="flex flex-col gap-1.5">
               <FieldLabel>Badges <span className="normal-case font-sans tracking-normal">(até 3)</span></FieldLabel>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {(["badge1Id", "badge2Id", "badge3Id"] as const).map((key, i) => (
                   <div key={key} className="flex flex-col gap-1">
                     <span className="text-xs text-muted-foreground">{i + 1}ª badge</span>
@@ -352,7 +352,6 @@ export function ProjectsTable({
                   </div>
                 ))}
               </div>
-              {/* Preview das badges */}
               {[form.badge1Id, form.badge2Id, form.badge3Id].some(Boolean) && (
                 <div className="flex flex-wrap gap-1.5 mt-1">
                   {[form.badge1Id, form.badge2Id, form.badge3Id].filter(Boolean).map((id) => {
@@ -363,8 +362,7 @@ export function ProjectsTable({
               )}
             </div>
 
-            {/* Status + Visível */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
                 <FieldLabel>Status Kanban</FieldLabel>
                 <select

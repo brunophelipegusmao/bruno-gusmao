@@ -37,7 +37,7 @@ export default async function PostsPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <PanelHeader title="POSTS_" description="Escreva e publique seus artigos" />
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-3 sm:p-6">
         <PostsTable initialPosts={posts} badges={badges} />
       </main>
     </div>

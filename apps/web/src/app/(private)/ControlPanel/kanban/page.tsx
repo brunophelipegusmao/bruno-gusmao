@@ -22,7 +22,7 @@ export default async function KanbanPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <PanelHeader title="KANBAN_" description="Organize o fluxo de produção do seu conteúdo" />
-      <main className="flex-1 p-6 overflow-x-auto">
+      <main className="flex-1 p-3 sm:p-6 overflow-x-auto">
         <KanbanBoard initialTasks={tasks} />
       </main>
     </div>

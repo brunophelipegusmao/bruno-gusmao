@@ -115,21 +115,24 @@ export function BadgesTable({ initialBadges }: { initialBadges: Badge[] }) {
   return (
     <>
       <div className="flex items-center justify-between mb-5">
-        <p className="text-sm text-muted-foreground">{badges.length} badge{badges.length !== 1 ? "s" : ""} cadastrada{badges.length !== 1 ? "s" : ""}</p>
+        <p className="text-sm text-muted-foreground">
+          {badges.length} badge{badges.length !== 1 ? "s" : ""} cadastrada{badges.length !== 1 ? "s" : ""}
+        </p>
         <Button onClick={openCreate} className="font-heading uppercase gap-2 text-xs">
           <Plus className="size-3.5" />
-          Nova Badge
+          <span className="hidden sm:inline">Nova Badge</span>
+          <span className="sm:hidden">Nova</span>
         </Button>
       </div>
 
-      <div className="rounded-2xl border border-border overflow-hidden">
-        <Table>
+      <div className="rounded-2xl border border-border overflow-hidden overflow-x-auto">
+        <Table className="min-w-96">
           <TableHeader>
             <TableRow className="bg-secondary/50">
               <TableHead className="font-heading text-xs uppercase tracking-widest">Preview</TableHead>
               <TableHead className="font-heading text-xs uppercase tracking-widest">Nome</TableHead>
-              <TableHead className="font-heading text-xs uppercase tracking-widest">Slug</TableHead>
-              <TableHead className="font-heading text-xs uppercase tracking-widest">Cores</TableHead>
+              <TableHead className="font-heading text-xs uppercase tracking-widest hidden sm:table-cell">Slug</TableHead>
+              <TableHead className="font-heading text-xs uppercase tracking-widest hidden md:table-cell">Cores</TableHead>
               <TableHead className="font-heading text-xs uppercase tracking-widest text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
@@ -153,8 +156,8 @@ export function BadgesTable({ initialBadges }: { initialBadges: Badge[] }) {
                   <CommonBadge name={b.name} bgColor={b.bgColor} textColor={b.textColor} />
                 </TableCell>
                 <TableCell className="font-medium text-sm">{b.name}</TableCell>
-                <TableCell className="text-muted-foreground text-xs font-mono">{b.slug}</TableCell>
-                <TableCell>
+                <TableCell className="text-muted-foreground text-xs font-mono hidden sm:table-cell">{b.slug}</TableCell>
+                <TableCell className="hidden md:table-cell">
                   <div className="flex items-center gap-2">
                     <div className="flex items-center gap-1.5">
                       <span
@@ -172,7 +175,7 @@ export function BadgesTable({ initialBadges }: { initialBadges: Badge[] }) {
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
-                  <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex justify-end gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                     <Button variant="ghost" size="icon" className="size-8" onClick={() => openEdit(b)}>
                       <Pencil className="size-3.5" />
                     </Button>
@@ -188,15 +191,14 @@ export function BadgesTable({ initialBadges }: { initialBadges: Badge[] }) {
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogPopup className="max-w-lg w-full">
+        <DialogPopup className="w-full max-w-lg mx-4 sm:mx-auto">
           <DialogHeader>
             <DialogTitle>{editId ? "EDITAR BADGE_" : "NOVA BADGE_"}</DialogTitle>
             <DialogCloseButton />
           </DialogHeader>
 
           <div className="flex flex-col gap-5 py-2">
-            {/* Nome + Slug */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
                 <label className="font-heading text-xs uppercase tracking-widest text-muted-foreground">
                   Nome
@@ -224,8 +226,7 @@ export function BadgesTable({ initialBadges }: { initialBadges: Badge[] }) {
               </div>
             </div>
 
-            {/* Cores */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <ColorField
                 label="Cor de fundo"
                 value={form.bgColor}
@@ -238,7 +239,6 @@ export function BadgesTable({ initialBadges }: { initialBadges: Badge[] }) {
               />
             </div>
 
-            {/* Preview */}
             <div className="flex flex-col gap-1.5">
               <label className="font-heading text-xs uppercase tracking-widest text-muted-foreground">
                 Preview
