@@ -53,6 +53,9 @@ Thumbs.db
 # Vercel
 .vercel
 
+# Turborepo
+.turbo
+
 # Temp
 .temp/
 .tmp/

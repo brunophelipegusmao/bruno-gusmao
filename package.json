@@ -7,16 +7,18 @@
   "license": "ISC",
   "private": true,
   "scripts": {
-    "dev": "pnpm -r --parallel run start:dev",
-    "build": "pnpm -r run build",
-    "start": "pnpm -r --parallel run start",
-    "lint": "pnpm -r run lint",
+    "dev": "turbo run start:dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
     "format": "pnpm -r --if-present run format",
-    "typecheck": "pnpm -r run typecheck",
-    "test": "pnpm -r --if-present run test",
-    "test:watch": "pnpm -r --if-present run test:watch",
-    "test:cov": "pnpm -r --if-present run test:cov",
-    "test:e2e": "pnpm -r --if-present run test:e2e"
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:cov": "turbo run test:cov",
+    "test:e2e": "turbo run test:e2e"
   },
-  "packageManager": "pnpm@10.33.4"
+  "packageManager": "pnpm@10.33.4",
+  "devDependencies": {
+    "turbo": "^2.9.14"
+  }
 }
