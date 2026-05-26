@@ -1,4 +1,5 @@
 import { All, Controller, Req, Res } from '@nestjs/common';
+import { ApiTags, ApiExcludeEndpoint } from '@nestjs/swagger';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { auth } from './auth';
 
@@ -10,8 +11,10 @@ const SKIP_HEADERS = new Set([
   'access-control-allow-headers',
 ]);
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
+  @ApiExcludeEndpoint()
   @All('*')
   async handler(@Req() req: FastifyRequest, @Res() reply: FastifyReply) {
     const baseUrl = process.env.BETTER_AUTH_URL ?? 'http://localhost:3001';
