@@ -1,0 +1,37 @@
+# syntax=docker/dockerfile:1
+# Build do frontend Next.js (output standalone) — monorepo pnpm.
+
+FROM node:22-slim AS base
+ENV PNPM_HOME=/pnpm
+ENV PATH=$PNPM_HOME:$PATH
+RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
+WORKDIR /app
+
+# ---- build ----
+FROM base AS build
+ENV NEXT_TELEMETRY_DISABLED=1
+# URLs públicas são embutidas em build time (passadas como build args).
+ARG NEXT_PUBLIC_API_URL=https://api.brunogusmao.dev
+ARG NEXT_PUBLIC_BETTER_AUTH_URL=https://api.brunogusmao.dev
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_BETTER_AUTH_URL=$NEXT_PUBLIC_BETTER_AUTH_URL
+COPY . .
+RUN pnpm install --frozen-lockfile
+RUN pnpm --filter web build
+
+# ---- runner ----
+FROM base AS runner
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN groupadd -g 1001 nodejs && useradd -u 1001 -g nodejs -m nextjs
+# standalone já contém o node_modules mínimo + server.js
+COPY --from=build --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
+COPY --from=build --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=build --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
+USER nextjs
+EXPOSE 3000
+HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=5 \
+  CMD node -e "fetch('http://localhost:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+CMD ["node", "apps/web/server.js"]

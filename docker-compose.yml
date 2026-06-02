@@ -1,16 +1,61 @@
 services:
-  postgres:
+  bruno_postgres:
     image: postgres:16-alpine
-    container_name: brunogusmao_postgres
+    container_name: bruno_postgres
     restart: unless-stopped
     environment:
       POSTGRES_DB: bruno_gusmao
       POSTGRES_USER: brunogusmao
       POSTGRES_PASSWORD: "11!Abril88"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "127.0.0.1:5432:5432"
+      - bruno_postgres_data:/var/lib/postgresql/data
+    networks:
+      - bruno_internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U brunogusmao -d bruno_gusmao"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  bruno_api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: bruno_api
+    restart: unless-stopped
+    env_file: apps/api/.env
+    environment:
+      TZ: America/Sao_Paulo
+    networks:
+      - bruno_internal   # alcança o bruno_postgres
+      - shared           # alcançável pelo nginx do outro sistema
+    depends_on:
+      bruno_postgres:
+        condition: service_healthy
+
+  bruno_web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+      args:
+        NEXT_PUBLIC_API_URL: https://api.brunogusmao.dev
+        NEXT_PUBLIC_BETTER_AUTH_URL: https://api.brunogusmao.dev
+    container_name: bruno_web
+    restart: unless-stopped
+    networks:
+      - shared           # alcançável pelo nginx do outro sistema
+    depends_on:
+      bruno_api:
+        condition: service_healthy
 
 volumes:
-  postgres_data:
+  bruno_postgres_data:
+
+networks:
+  bruno_internal:
+    driver: bridge
+  # Rede do outro sistema (management-process-web). O nome real é descoberto com
+  # `docker network ls` e definido em SHARED_NETWORK no arquivo .env ao lado deste compose.
+  shared:
+    external: true
+    name: ${SHARED_NETWORK:-management-process-web_internal}

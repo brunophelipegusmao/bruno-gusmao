@@ -1,21 +1,18 @@
 #!/usr/bin/env bash
+# Atualização do bruno-gusmao (Docker): puxa o código, rebuilda e reinicia.
 set -euo pipefail
-APP_DIR="$(cd "$(dirname "$0")" && pwd)"
-cd "$APP_DIR"
+cd "$(dirname "$0")"
 
-echo "==> [1/4] Atualizando código..."
+echo "==> [1/3] Atualizando código..."
 git pull origin master
 
-echo "==> [2/4] Instalando dependências..."
-pnpm install --frozen-lockfile
+echo "==> [2/3] Build das imagens..."
+docker compose build bruno_api bruno_web
 
-echo "==> [3/4] Build de produção..."
-pnpm build
+echo "==> [3/3] Migrations + restart..."
+docker compose run --rm bruno_api pnpm db:migrate
+docker compose up -d bruno_api bruno_web
 
-echo "==> [4/4] Rodando migrations e reiniciando apps..."
-pnpm --filter api db:migrate
-pm2 restart brunogusmao-api brunogusmao-web
-
+docker compose ps
 echo ""
-echo "Atualização concluída!"
-pm2 status
+echo "Atualização concluída."

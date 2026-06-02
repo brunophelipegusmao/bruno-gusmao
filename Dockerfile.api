@@ -1,0 +1,34 @@
+# syntax=docker/dockerfile:1
+# Build da API NestJS (Fastify) — monorepo pnpm.
+
+FROM node:22-slim AS base
+ENV PNPM_HOME=/pnpm
+ENV PATH=$PNPM_HOME:$PATH
+RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
+WORKDIR /app
+
+# ---- build ----
+FROM base AS build
+COPY . .
+RUN pnpm install --frozen-lockfile
+RUN pnpm --filter api build
+
+# ---- runner ----
+FROM base AS runner
+ENV NODE_ENV=production
+ENV PORT=3001
+RUN groupadd -g 1001 nodejs && useradd -u 1001 -g nodejs -m nestjs
+WORKDIR /app
+# Preserva a estrutura do workspace para os symlinks do pnpm resolverem.
+COPY --from=build --chown=nestjs:nodejs /app/node_modules ./node_modules
+COPY --from=build --chown=nestjs:nodejs /app/packages ./packages
+COPY --from=build --chown=nestjs:nodejs /app/package.json ./package.json
+COPY --from=build --chown=nestjs:nodejs /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
+COPY --from=build --chown=nestjs:nodejs /app/apps/api ./apps/api
+USER nestjs
+WORKDIR /app/apps/api
+EXPOSE 3001
+# Rota raiz (GET /api) responde sem tocar no banco — ideal para health.
+HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=5 \
+  CMD node -e "fetch('http://localhost:3001/api').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+CMD ["node", "dist/main.js"]

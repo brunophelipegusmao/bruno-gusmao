@@ -1,0 +1,15 @@
+**/node_modules
+**/.next
+**/dist
+**/.turbo
+.git
+.github
+**/.env
+**/.env.*
+!**/.env.example
+**/*.log
+**/coverage
+apps/web/public/sw.js
+apps/web/public/sw.js.map
+.claude
+*.md
