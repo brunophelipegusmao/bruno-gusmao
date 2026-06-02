@@ -17,11 +17,7 @@ FROM base AS runner
 ENV NODE_ENV=production
 ENV PORT=3001
 WORKDIR /app
-# Copia o workspace completo (inclui pnpm + drizzle-kit necessários para migrations)
 COPY --from=build /app .
-RUN groupadd -g 1001 nodejs && useradd -u 1001 -g nodejs -m nestjs \
-    && chown -R nestjs:nodejs /app
-USER nestjs
 WORKDIR /app/apps/api
 EXPOSE 3001
 HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=5 \
