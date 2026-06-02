@@ -3,6 +3,26 @@ set -euo pipefail
 APP_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$APP_DIR"
 
+# ── Pré-flight: não afetar o outro sistema da VPS ─────────────────────────────
+echo "==> [0/8] Verificando portas (5432 / 3000 / 3001)..."
+porta_em_uso() { ss -tlnH 2>/dev/null | awk '{print $4}' | grep -qE "[:.]$1\$"; }
+CONFLITO=0
+for p in 5432 3000 3001; do
+  if porta_em_uso "$p"; then
+    echo "     ⚠️  Porta $p já está em uso (provavelmente o outro sistema)."
+    CONFLITO=1
+  fi
+done
+if [ "$CONFLITO" = "1" ]; then
+  echo ""
+  echo "ERRO: há conflito de porta com outro serviço na VPS. Ajuste antes de continuar:"
+  echo "  - 5432: altere o mapeamento no docker-compose.yml (ex: \"127.0.0.1:5433:5432\")"
+  echo "          e o DATABASE_URL em apps/api/.env para a porta nova."
+  echo "  - 3000/3001: altere PORT no ecosystem.config.js e os proxy_pass em nginx/brunogusmao.conf."
+  exit 1
+fi
+echo "     Portas livres."
+
 echo "==> [1/8] Instalando dependências..."
 pnpm install --frozen-lockfile
 
