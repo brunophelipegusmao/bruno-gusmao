@@ -9,13 +9,8 @@ FROM base AS build
 WORKDIR /app
 COPY . .
 RUN pnpm install --frozen-lockfile
-# Roda nest build directamente no diretório da API (sem pnpm filter)
 WORKDIR /app/apps/api
-RUN echo "=== PATH ===" && echo $PATH \
-    && echo "=== nest version ===" && ./node_modules/.bin/nest --version 2>/dev/null || node_modules/.bin/nest --version 2>/dev/null || ../../node_modules/.bin/nest --version \
-    && echo "=== building ===" && ../../node_modules/.bin/nest build \
-    && echo "=== dist ===" && ls dist/
-# Cria bundle de produção autocontido
+RUN ./node_modules/.bin/nest build && ls dist/main.js
 WORKDIR /app
 RUN pnpm --filter api deploy --prod /deploy/api \
     && cp -r apps/api/dist /deploy/api/dist
