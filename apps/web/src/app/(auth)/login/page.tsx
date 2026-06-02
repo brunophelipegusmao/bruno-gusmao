@@ -16,7 +16,7 @@ export default function Login() {
     setError(null);
     await signIn.social({
       provider: "google",
-      callbackURL: "/ControlPanel",
+      callbackURL: `${window.location.origin}/ControlPanel`,
     });
     setLoading(false);
   };
@@ -30,7 +30,7 @@ export default function Login() {
     const { error } = await signIn.email({
       email: data.get("email") as string,
       password: data.get("password") as string,
-      callbackURL: "/ControlPanel",
+      callbackURL: `${window.location.origin}/ControlPanel`,
     });
 
     if (error) {
