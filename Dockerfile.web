@@ -12,7 +12,7 @@ FROM base AS build
 ENV NEXT_TELEMETRY_DISABLED=1
 # URLs públicas são embutidas em build time (passadas como build args).
 ARG NEXT_PUBLIC_API_URL=https://api.brunogusmao.dev
-ARG NEXT_PUBLIC_BETTER_AUTH_URL=https://api.brunogusmao.dev
+ARG NEXT_PUBLIC_BETTER_AUTH_URL=https://brunogusmao.dev
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_BETTER_AUTH_URL=$NEXT_PUBLIC_BETTER_AUTH_URL
 COPY . .
