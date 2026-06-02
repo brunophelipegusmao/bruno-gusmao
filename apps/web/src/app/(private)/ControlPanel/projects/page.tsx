@@ -1,6 +1,7 @@
 import { ProjectsTable } from "@/components/ControlPanel/projectsTable";
 import { PanelHeader } from "@/components/ControlPanel/panelHeader";
 import type { Badge } from "@/app/(private)/ControlPanel/badges/page";
+import { getSessionCookieHeader } from "@/lib/server-auth";
 
 export type Project = {
   id: string;
@@ -14,6 +15,7 @@ export type Project = {
   badge2Id: string | null;
   badge3Id: string | null;
   visible: boolean;
+  featured: boolean;
   kanbanStatus: string;
   createdAt: string;
   updatedAt: string;
@@ -21,8 +23,9 @@ export type Project = {
 
 async function getData() {
   const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+  const authHeaders = await getSessionCookieHeader();
   const [projects, badges] = await Promise.all([
-    fetch(`${base}/api/projects/all`, { cache: "no-store" }).then((r) =>
+    fetch(`${base}/api/projects/all`, { cache: "no-store", headers: authHeaders }).then((r) =>
       r.ok ? r.json() : []
     ),
     fetch(`${base}/api/badges`, { cache: "no-store" }).then((r) =>

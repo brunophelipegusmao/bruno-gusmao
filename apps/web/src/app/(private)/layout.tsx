@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/ControlPanel/appSidebar';
+import { getSessionCookieHeader } from '@/lib/server-auth';
 
 export default async function PrivateLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();
@@ -13,12 +14,10 @@ export default async function PrivateLayout({ children }: { children: React.Reac
     redirect('/login');
   }
 
+  const authHeaders = await getSessionCookieHeader();
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/auth/get-session`,
-    {
-      headers: { Cookie: `${sessionCookie.name}=${sessionCookie.value}` },
-      cache: 'no-store',
-    },
+    { headers: authHeaders, cache: 'no-store' },
   );
 
   const session = await res.json();

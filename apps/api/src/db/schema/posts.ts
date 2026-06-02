@@ -21,6 +21,7 @@ export const posts = pgTable('posts', {
     onDelete: 'set null',
   }),
   visible: boolean('visible').notNull().default(true),
+  featured: boolean('featured').notNull().default(false),
   kanbanStatus: varchar('kanban_status', { length: 50 }).notNull().default('backlog'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
@@ -40,6 +41,7 @@ export const insertPostSchema = createInsertSchema(posts, {
   badge2Id: z.string().uuid().optional().nullable(),
   badge3Id: z.string().uuid().optional().nullable(),
   visible: z.boolean().optional(),
+  featured: z.boolean().optional(),
   kanbanStatus: z.enum(KANBAN_STATUSES).optional(),
 }).omit({ id: true, createdAt: true, updatedAt: true });
 

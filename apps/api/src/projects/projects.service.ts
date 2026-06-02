@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { and, eq } from 'drizzle-orm';
+import { and, desc, eq } from 'drizzle-orm';
 import type { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import * as schema from '../db/schema';
 import { DB } from '../db/db.module';
@@ -14,11 +14,12 @@ export class ProjectsService {
       .select()
       .from(projects)
       .where(and(eq(projects.visible, true)))
-      .orderBy(projects.createdAt);
+      .orderBy(desc(projects.featured), projects.createdAt);
   }
 
   findAll() {
-    return this.db.select().from(projects).orderBy(projects.createdAt);
+    return this.db.select().from(projects)
+      .orderBy(desc(projects.featured), projects.createdAt);
   }
 
   findOne(id: string) {

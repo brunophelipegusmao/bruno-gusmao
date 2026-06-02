@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Pencil, Trash2, Plus, Eye, EyeOff, Globe, Code2 } from "lucide-react";
+import { Pencil, Trash2, Plus, Eye, EyeOff, Globe, Code2, Star } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -50,6 +50,7 @@ const EMPTY = {
   badge2Id: "",
   badge3Id: "",
   visible: true,
+  featured: false,
   kanbanStatus: "backlog",
 };
 
@@ -113,7 +114,7 @@ export function ProjectsTable({
       image: p.image ?? "", projectUrl: p.projectUrl ?? "",
       repoUrl: p.repoUrl ?? "", badge1Id: p.badge1Id ?? "",
       badge2Id: p.badge2Id ?? "", badge3Id: p.badge3Id ?? "",
-      visible: p.visible, kanbanStatus: p.kanbanStatus,
+      visible: p.visible, featured: p.featured, kanbanStatus: p.kanbanStatus,
     });
     setEditId(p.id);
     setOpen(true);
@@ -152,6 +153,17 @@ export function ProjectsTable({
       }
       setOpen(false);
     } finally { setLoading(false); }
+  };
+
+  const toggleFeatured = async (p: Project) => {
+    const res = await fetch(`${API}/api/projects/${p.id}`, {
+      method: "PATCH", headers: { "Content-Type": "application/json" },
+      credentials: "include", body: JSON.stringify({ featured: !p.featured }),
+    });
+    if (res.ok) {
+      const updated = await res.json();
+      setProjects((prev) => prev.map((x) => (x.id === p.id ? updated : x)));
+    }
   };
 
   const toggleVisible = async (p: Project) => {
@@ -197,6 +209,7 @@ export function ProjectsTable({
               <TableHead className="font-heading text-xs uppercase tracking-widest hidden md:table-cell">Summary</TableHead>
               <TableHead className="font-heading text-xs uppercase tracking-widest hidden lg:table-cell">Badges</TableHead>
               <TableHead className="font-heading text-xs uppercase tracking-widest hidden sm:table-cell">Status</TableHead>
+              <TableHead className="font-heading text-xs uppercase tracking-widest hidden sm:table-cell">Destaque</TableHead>
               <TableHead className="font-heading text-xs uppercase tracking-widest">Visível</TableHead>
               <TableHead className="font-heading text-xs uppercase tracking-widest text-right">Ações</TableHead>
             </TableRow>
@@ -235,6 +248,15 @@ export function ProjectsTable({
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-heading uppercase tracking-wide ${KANBAN_COLORS[p.kanbanStatus] ?? "text-muted-foreground"}`}>
                     {KANBAN_LABELS[p.kanbanStatus] ?? p.kanbanStatus}
                   </span>
+                </TableCell>
+                <TableCell className="hidden sm:table-cell">
+                  <button
+                    onClick={() => toggleFeatured(p)}
+                    className="p-1 rounded hover:bg-muted transition-colors"
+                    title={p.featured ? "Remover destaque" : "Marcar como destaque"}
+                  >
+                    <Star className={`size-4 ${p.featured ? "fill-amber-400 text-amber-400" : "text-muted-foreground"}`} />
+                  </button>
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
