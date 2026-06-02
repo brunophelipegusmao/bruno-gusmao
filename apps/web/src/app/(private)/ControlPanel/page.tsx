@@ -1,13 +1,15 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { FolderKanban, FileText, Tag, Kanban } from "lucide-react";
+import { getSessionCookieHeader } from "@/lib/server-auth";
 
 async function getStats() {
   const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+  const authHeaders = await getSessionCookieHeader();
   const [projects, posts, badges] = await Promise.all([
-    fetch(`${base}/api/projects/all`, { cache: "no-store" }).then((r) =>
+    fetch(`${base}/api/projects/all`, { cache: "no-store", headers: authHeaders }).then((r) =>
       r.ok ? r.json() : []
     ),
-    fetch(`${base}/api/posts/all`, { cache: "no-store" }).then((r) =>
+    fetch(`${base}/api/posts/all`, { cache: "no-store", headers: authHeaders }).then((r) =>
       r.ok ? r.json() : []
     ),
     fetch(`${base}/api/badges`, { cache: "no-store" }).then((r) =>
