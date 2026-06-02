@@ -1,6 +1,19 @@
+import type { Metadata } from "next";
 import { Mail, Code2, Briefcase } from "lucide-react";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 import ContactForm from "@/components/Contact/contactForm";
+
+export const metadata: Metadata = {
+  title: "Contato",
+  description:
+    "Entre em contato com Bruno Gusmão — disponível para projetos freelance, colaborações e oportunidades.",
+  openGraph: {
+    title: "Contato | Bruno Gusmão",
+    description:
+      "Entre em contato com Bruno Gusmão para projetos freelance, colaborações e oportunidades.",
+    url: "https://brunogusmao.dev/contact",
+  },
+};
 import Footer from "@/components/Common/footer";
 
 const contactLinks = [

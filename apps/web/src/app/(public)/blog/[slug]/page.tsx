@@ -40,9 +40,23 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const { post } = await getData(slug);
   if (!post) return { title: "Post não encontrado" };
+  const ogImage = post.imageUrl ?? "/og-image.png";
   return {
     title: post.name,
     description: post.summary,
+    openGraph: {
+      title: post.name,
+      description: post.summary,
+      url: `https://brunogusmao.dev/blog/${slug}`,
+      type: "article",
+      images: [{ url: ogImage, alt: post.name }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.name,
+      description: post.summary,
+      images: [ogImage],
+    },
   };
 }
 

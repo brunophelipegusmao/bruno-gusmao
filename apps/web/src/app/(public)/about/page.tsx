@@ -1,5 +1,17 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Footer from "@/components/Common/footer";
+
+export const metadata: Metadata = {
+  title: "Sobre",
+  description:
+    "Conheça a trajetória profissional de Bruno Gusmão — formação, experiências e habilidades técnicas.",
+  openGraph: {
+    title: "Sobre | Bruno Gusmão",
+    description: "Trajetória profissional, formação e experiências de Bruno Gusmão.",
+    url: "https://brunogusmao.dev/about",
+  },
+};
 import {
   Briefcase,
   GraduationCap,

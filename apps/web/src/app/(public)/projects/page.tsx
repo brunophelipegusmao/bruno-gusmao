@@ -1,6 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@base-ui/react/button";
 import FeaturedCard from "@/components/Common/featuredCard";
+
+export const metadata: Metadata = {
+  title: "Projetos",
+  description:
+    "Portfólio de projetos de Bruno Gusmão — aplicações web fullstack com NestJS, Next.js e TypeScript.",
+  openGraph: {
+    title: "Projetos | Bruno Gusmão",
+    description:
+      "Projetos fullstack desenvolvidos por Bruno Gusmão com NestJS, Next.js e TypeScript.",
+    url: "https://brunogusmao.dev/projects",
+  },
+};
 import CommonGrid from "@/components/Common/commonGrid";
 import Footer from "@/components/Common/footer";
 import { TypingAnimation } from "@/components/ui/typing-animation";

@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: brunogusmao_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: bruno_gusmao
+      POSTGRES_USER: brunogusmao
+      POSTGRES_PASSWORD: "11!Abril88"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+
+volumes:
+  postgres_data:

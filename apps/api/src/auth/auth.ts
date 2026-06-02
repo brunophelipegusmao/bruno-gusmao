@@ -7,6 +7,11 @@ export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
   secret: process.env.BETTER_AUTH_SECRET,
   trustedOrigins: (process.env.WEB_URL ?? 'http://localhost:3000').split(','),
+  advanced: {
+    defaultCookieOptions: {
+      ...(process.env.COOKIE_DOMAIN ? { domain: process.env.COOKIE_DOMAIN } : {}),
+    },
+  },
 
   database: drizzleAdapter(db, {
     provider: 'pg',

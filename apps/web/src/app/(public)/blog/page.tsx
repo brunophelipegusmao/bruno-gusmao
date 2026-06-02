@@ -1,6 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@base-ui/react/button";
 import FeaturedCard from "@/components/Common/featuredCard";
+
+export const metadata: Metadata = {
+  title: "Blog",
+  description:
+    "Artigos sobre desenvolvimento web, arquitetura de software e tecnologia escritos por Bruno Gusmão.",
+  openGraph: {
+    title: "Blog | Bruno Gusmão",
+    description:
+      "Artigos sobre desenvolvimento web, arquitetura de software e tecnologia.",
+    url: "https://brunogusmao.dev/blog",
+  },
+};
 import CommonGrid from "@/components/Common/commonGrid";
 import Footer from "@/components/Common/footer";
 import { TypingAnimation } from "@/components/ui/typing-animation";

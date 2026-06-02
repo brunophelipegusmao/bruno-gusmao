@@ -1,5 +1,18 @@
+import type { Metadata } from "next";
 import { AnimatedList } from "@/components/ui/animated-list";
 import { TypingAnimation } from "@/components/ui/typing-animation";
+
+export const metadata: Metadata = {
+  title: "Bruno Gusmão",
+  description:
+    "Desenvolvedor full-stack especializado em NestJS, Next.js e TypeScript. Conheça meus projetos e trajetória.",
+  openGraph: {
+    title: "Bruno Gusmão — Desenvolvedor Full-Stack",
+    description:
+      "Desenvolvedor full-stack especializado em NestJS, Next.js e TypeScript.",
+    url: "https://brunogusmao.dev",
+  },
+};
 
 const itensList = [
   { label: "JavaScript", image: "icons/javascript.svg" },

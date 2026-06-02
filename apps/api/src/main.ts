@@ -55,6 +55,7 @@ async function bootstrap() {
       },
       'session',
     )
+    .addServer('https://api.brunogusmao.dev', 'Produção')
     .addServer('http://localhost:3001', 'Desenvolvimento local')
     .build();
 
