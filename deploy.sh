@@ -56,12 +56,15 @@ echo "==> [6/8] Configurando Nginx..."
 sudo cp nginx/brunogusmao.conf /etc/nginx/sites-available/brunogusmao
 sudo ln -sf /etc/nginx/sites-available/brunogusmao /etc/nginx/sites-enabled/brunogusmao
 
-# Adiciona o map de WebSocket ao nginx.conf principal caso não exista
-if ! sudo grep -q 'connection_upgrade' /etc/nginx/nginx.conf; then
-  echo "     Adicionando map WebSocket ao nginx.conf..."
-  sudo sed -i '/http {/a\\tmap $http_upgrade $connection_upgrade { default upgrade; '"''"' close; }' /etc/nginx/nginx.conf
+# Map de WebSocket via arquivo isolado em conf.d/ (incluído pelo http{} no Ubuntu).
+# NÃO editamos o nginx.conf compartilhado, para não afetar o outro sistema.
+if ! grep -rq 'connection_upgrade' /etc/nginx/conf.d/ /etc/nginx/nginx.conf 2>/dev/null; then
+  echo "     Criando /etc/nginx/conf.d/ws_upgrade.conf..."
+  printf 'map $http_upgrade $connection_upgrade {\n  default upgrade;\n  "" close;\n}\n' \
+    | sudo tee /etc/nginx/conf.d/ws_upgrade.conf >/dev/null
 fi
 
+# Valida ANTES de recarregar — se o teste falhar, o nginx do outro sistema segue intacto.
 sudo nginx -t
 sudo nginx -s reload
 echo "     Nginx recarregado."
