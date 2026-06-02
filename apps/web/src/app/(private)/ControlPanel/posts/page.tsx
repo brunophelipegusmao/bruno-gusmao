@@ -21,7 +21,7 @@ export type Post = {
 };
 
 async function getData() {
-  const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+  const base = process.env.API_URL ?? "http://localhost:3001";
   const authHeaders = await getSessionCookieHeader();
   const [posts, badges] = await Promise.all([
     fetch(`${base}/api/posts/all`, { cache: "no-store", headers: authHeaders }).then((r) =>

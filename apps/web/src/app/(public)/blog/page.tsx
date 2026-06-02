@@ -39,7 +39,7 @@ type ApiBadge = {
 };
 
 async function getData() {
-  const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+  const base = process.env.API_URL ?? "http://localhost:3001";
   const [posts, badges] = await Promise.all([
     fetch(`${base}/api/posts`, { cache: "no-store" }).then<ApiPost[]>((r) => r.ok ? r.json() : []),
     fetch(`${base}/api/badges`, { cache: "no-store" }).then<ApiBadge[]>((r) => r.ok ? r.json() : []),

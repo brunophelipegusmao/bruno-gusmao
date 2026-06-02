@@ -11,11 +11,13 @@ WORKDIR /app
 FROM base AS build
 ENV NEXT_TELEMETRY_DISABLED=1
 # URLs públicas são embutidas em build time (passadas como build args).
-ARG NEXT_PUBLIC_API_URL=https://api.brunogusmao.dev
+ARG NEXT_PUBLIC_API_URL=https://brunogusmao.dev
 ARG NEXT_PUBLIC_BETTER_AUTH_URL=https://brunogusmao.dev
+ARG NEXT_PUBLIC_WS_URL=ws://localhost:3001
 ARG API_URL=http://localhost:3001
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_BETTER_AUTH_URL=$NEXT_PUBLIC_BETTER_AUTH_URL
+ENV NEXT_PUBLIC_WS_URL=$NEXT_PUBLIC_WS_URL
 ENV API_URL=$API_URL
 COPY . .
 RUN pnpm install --frozen-lockfile

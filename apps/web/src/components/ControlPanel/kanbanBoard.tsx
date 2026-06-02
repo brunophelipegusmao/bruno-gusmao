@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import type { KanbanTask } from "@/app/(private)/ControlPanel/kanban/page";
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
-const WS_URL = API.replace(/^http/, "ws");
+const WS_URL = process.env.NEXT_PUBLIC_WS_URL ?? "ws://localhost:3001";
 
 const FIXED_COLORS = {
   blog: "#3C71C8",
@@ -254,6 +254,13 @@ export function KanbanBoard({ initialTasks }: { initialTasks: KanbanTask[] }) {
     if (!task || task.kanbanStatus === to) return;
 
     setTasks((prev) => prev.map((t) => (t.id === draggableId ? { ...t, kanbanStatus: to } : t)));
+
+    fetch(`${API}/api/kanban-tasks/${task.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ kanbanStatus: to }),
+    });
 
     if (wsRef.current?.readyState === WebSocket.OPEN) {
       wsRef.current.send(

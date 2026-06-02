@@ -11,7 +11,7 @@ export type KanbanTask = {
 };
 
 async function getTasks(): Promise<KanbanTask[]> {
-  const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+  const base = process.env.API_URL ?? "http://localhost:3001";
   const res = await fetch(`${base}/api/kanban-tasks`, { cache: "no-store" });
   return res.ok ? res.json() : [];
 }

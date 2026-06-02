@@ -39,7 +39,8 @@ services:
       dockerfile: Dockerfile.web
       args:
         # Auth passa por brunogusmao.dev (rewrite Next.js → API interna)
-        NEXT_PUBLIC_API_URL: https://api.brunogusmao.dev
+        NEXT_PUBLIC_API_URL: https://brunogusmao.dev
+        NEXT_PUBLIC_WS_URL: wss://api.brunogusmao.dev
         NEXT_PUBLIC_BETTER_AUTH_URL: https://brunogusmao.dev
         API_URL: http://bruno_api:3001
     container_name: bruno_web

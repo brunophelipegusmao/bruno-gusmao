@@ -16,7 +16,7 @@ export default async function PrivateLayout({ children }: { children: React.Reac
 
   const authHeaders = await getSessionCookieHeader();
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/get-session`,
+    `${process.env.API_URL}/api/auth/get-session`,
     { headers: authHeaders, cache: 'no-store' },
   );
 
