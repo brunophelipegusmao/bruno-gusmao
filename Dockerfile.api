@@ -12,7 +12,7 @@ RUN pnpm install --frozen-lockfile
 WORKDIR /app/apps/api
 RUN ./node_modules/.bin/nest build && ls dist/src/main.js
 WORKDIR /app
-RUN pnpm --filter api deploy --prod /deploy/api \
+RUN pnpm --filter api deploy --prod --legacy /deploy/api \
     && cp -r apps/api/dist /deploy/api/dist
 
 # ── runner ───────────────────────────────────────────────────────────────────
