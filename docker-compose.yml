@@ -38,11 +38,16 @@ services:
       context: .
       dockerfile: Dockerfile.web
       args:
+        # Auth passa por brunogusmao.dev (rewrite Next.js → API interna)
         NEXT_PUBLIC_API_URL: https://api.brunogusmao.dev
-        NEXT_PUBLIC_BETTER_AUTH_URL: https://api.brunogusmao.dev
+        NEXT_PUBLIC_BETTER_AUTH_URL: https://brunogusmao.dev
     container_name: bruno_web
     restart: unless-stopped
+    environment:
+      # URL interna do container API usada no rewrite server-side de /api/auth/*
+      API_URL: http://bruno_api:3001
     networks:
+      - bruno_internal   # precisa alcançar a API para o rewrite server-side
       - shared           # alcançável pelo nginx do outro sistema
     depends_on:
       bruno_api:

@@ -8,14 +8,25 @@ const withSerwistConfig = withSerwist({
   disable: process.env.NODE_ENV === "development",
 });
 
+// URL interna do container API (usada no servidor Next.js para o rewrite de auth).
+// Em desenvolvimento aponta direto para localhost.
+const apiUrl = process.env.API_URL ?? "http://localhost:3001";
+
 const nextConfig: NextConfig = {
   reactCompiler: true,
-  // Saída standalone para imagem Docker enxuta.
   output: "standalone",
-  // Em monorepo pnpm, o tracing precisa apontar para a raiz para incluir as deps do workspace.
   outputFileTracingRoot: path.join(__dirname, "../../"),
-  // Sem otimização nativa de imagem (dispensa o sharp dentro do container).
   images: { unoptimized: true },
+  // Proxy de auth: as chamadas /api/auth/* passam pelo Next.js e chegam à API
+  // com o domínio brunogusmao.dev — sem problemas de cookie cross-subdomain.
+  async rewrites() {
+    return [
+      {
+        source: "/api/auth/:path*",
+        destination: `${apiUrl}/api/auth/:path*`,
+      },
+    ];
+  },
 };
 
 export default withSerwistConfig(nextConfig);
