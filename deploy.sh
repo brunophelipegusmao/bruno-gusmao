@@ -5,6 +5,9 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
+# Carrega variáveis do .env local (ex: SHARED_NETWORK=mgmt_internal)
+[ -f .env ] && set -a && source .env && set +a
+
 SHARED="${SHARED_NETWORK:-management-process-web_internal}"
 
 echo "==> [1/5] Validando pré-requisitos..."
