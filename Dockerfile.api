@@ -10,20 +10,10 @@ WORKDIR /app
 COPY . .
 RUN pnpm install --frozen-lockfile
 WORKDIR /app/apps/api
-RUN ./node_modules/.bin/nest build && ls dist/main.js
-WORKDIR /app
-RUN pnpm --filter api deploy --prod /deploy/api \
-    && cp -r apps/api/dist /deploy/api/dist
-
-# ── runner ───────────────────────────────────────────────────────────────────
-FROM node:22-slim AS runner
-ENV NODE_ENV=production
-ENV PORT=3001
-RUN groupadd -g 1001 nodejs && useradd -u 1001 -g nodejs -m nestjs
-WORKDIR /app
-COPY --from=build --chown=nestjs:nodejs /deploy/api .
-USER nestjs
-EXPOSE 3001
-HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=5 \
-  CMD node -e "fetch('http://localhost:3001/api').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
-CMD ["node", "dist/main.js"]
+# Roda o build sem falhar para poder inspecionar o resultado
+RUN ./node_modules/.bin/nest build 2>&1 || true
+# Mostra tudo o que foi gerado — encontra o main.js independente de onde estiver
+RUN echo "=== ls apps/api ===" && ls -la /app/apps/api/ \
+    && echo "=== dist (se existir) ===" && ls -la /app/apps/api/dist/ 2>/dev/null || echo "SEM dist" \
+    && echo "=== find main.js em todo /app ===" && find /app -name "main.js" 2>/dev/null \
+    && echo "=== find *.js em dist ===" && find /app -path "*/dist/*.js" 2>/dev/null | head -20
