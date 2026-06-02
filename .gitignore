@@ -15,6 +15,11 @@ out/
 .next/
 next-env.d.ts
 
+# Serwist (service worker gerado no build)
+apps/web/public/sw.js
+apps/web/public/sw.js.map
+apps/web/public/swe-worker-*.js
+
 # TypeScript
 *.tsbuildinfo
 
