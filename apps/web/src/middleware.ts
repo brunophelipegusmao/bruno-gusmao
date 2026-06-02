@@ -6,7 +6,9 @@ const AUTH_PATHS = ['/login'];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const sessionToken = request.cookies.get('better-auth.session_token');
+  const sessionToken =
+    request.cookies.get('__Secure-better-auth.session_token') ??
+    request.cookies.get('better-auth.session_token');
 
   const isPrivate = PRIVATE_PATHS.some((p) => pathname.startsWith(p));
   const isAuth = AUTH_PATHS.some((p) => pathname.startsWith(p));

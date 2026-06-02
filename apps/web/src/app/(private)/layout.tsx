@@ -5,16 +5,18 @@ import { AppSidebar } from '@/components/ControlPanel/appSidebar';
 
 export default async function PrivateLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();
-  const sessionToken = cookieStore.get('better-auth.session_token');
+  const sessionCookie =
+    cookieStore.get('__Secure-better-auth.session_token') ??
+    cookieStore.get('better-auth.session_token');
 
-  if (!sessionToken) {
+  if (!sessionCookie) {
     redirect('/login');
   }
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/auth/get-session`,
     {
-      headers: { Cookie: `better-auth.session_token=${sessionToken.value}` },
+      headers: { Cookie: `${sessionCookie.name}=${sessionCookie.value}` },
       cache: 'no-store',
     },
   );
