@@ -25,19 +25,6 @@ import type { Badge } from "@/app/(private)/ControlPanel/badges/page";
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
-const KANBAN_COLORS: Record<string, string> = {
-  backlog: "text-muted-foreground bg-muted/40",
-  todo: "text-blue-400 bg-blue-400/10",
-  "in-progress": "text-amber-400 bg-amber-400/10",
-  done: "text-emerald-400 bg-emerald-400/10",
-};
-
-const KANBAN_LABELS: Record<string, string> = {
-  backlog: "Backlog",
-  todo: "A fazer",
-  "in-progress": "Em andamento",
-  done: "Concluído",
-};
 
 const EMPTY = {
   name: "",
@@ -51,7 +38,6 @@ const EMPTY = {
   badge3Id: "",
   visible: true,
   featured: false,
-  kanbanStatus: "backlog",
 };
 
 function toSlug(str: string) {
@@ -114,7 +100,7 @@ export function ProjectsTable({
       image: p.image ?? "", projectUrl: p.projectUrl ?? "",
       repoUrl: p.repoUrl ?? "", badge1Id: p.badge1Id ?? "",
       badge2Id: p.badge2Id ?? "", badge3Id: p.badge3Id ?? "",
-      visible: p.visible, featured: p.featured, kanbanStatus: p.kanbanStatus,
+      visible: p.visible, featured: p.featured,
     });
     setEditId(p.id);
     setOpen(true);
@@ -208,7 +194,6 @@ export function ProjectsTable({
               <TableHead className="font-heading text-xs uppercase tracking-widest">Nome</TableHead>
               <TableHead className="font-heading text-xs uppercase tracking-widest hidden md:table-cell">Summary</TableHead>
               <TableHead className="font-heading text-xs uppercase tracking-widest hidden lg:table-cell">Badges</TableHead>
-              <TableHead className="font-heading text-xs uppercase tracking-widest hidden sm:table-cell">Status</TableHead>
               <TableHead className="font-heading text-xs uppercase tracking-widest hidden sm:table-cell">Destaque</TableHead>
               <TableHead className="font-heading text-xs uppercase tracking-widest">Visível</TableHead>
               <TableHead className="font-heading text-xs uppercase tracking-widest text-right">Ações</TableHead>
@@ -243,11 +228,6 @@ export function ProjectsTable({
                       <CommonBadge key={b.id} name={b.name} bgColor={b.bgColor} textColor={b.textColor} />
                     ))}
                   </div>
-                </TableCell>
-                <TableCell className="hidden sm:table-cell">
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-heading uppercase tracking-wide ${KANBAN_COLORS[p.kanbanStatus] ?? "text-muted-foreground"}`}>
-                    {KANBAN_LABELS[p.kanbanStatus] ?? p.kanbanStatus}
-                  </span>
                 </TableCell>
                 <TableCell className="hidden sm:table-cell">
                   <button
@@ -384,28 +364,13 @@ export function ProjectsTable({
               )}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex flex-col gap-1.5">
-                <FieldLabel>Status Kanban</FieldLabel>
-                <select
-                  className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm outline-none focus:border-primary transition-colors"
-                  value={form.kanbanStatus}
-                  onChange={(e) => set("kanbanStatus", e.target.value)}
-                >
-                  <option value="backlog">Backlog</option>
-                  <option value="todo">A fazer</option>
-                  <option value="in-progress">Em andamento</option>
-                  <option value="done">Concluído</option>
-                </select>
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <FieldLabel>Visibilidade</FieldLabel>
-                <div className="flex items-center gap-3 h-10 px-3 rounded-lg border border-border bg-background">
-                  <Switch checked={form.visible} onCheckedChange={(v) => set("visible", v)} />
-                  <span className="text-sm text-muted-foreground">
-                    {form.visible ? "Visível ao público" : "Oculto ao público"}
-                  </span>
-                </div>
+            <div className="flex flex-col gap-1.5">
+              <FieldLabel>Visibilidade</FieldLabel>
+              <div className="flex items-center gap-3 h-10 px-3 rounded-lg border border-border bg-background">
+                <Switch checked={form.visible} onCheckedChange={(v) => set("visible", v)} />
+                <span className="text-sm text-muted-foreground">
+                  {form.visible ? "Visível ao público" : "Oculto ao público"}
+                </span>
               </div>
             </div>
           </div>
