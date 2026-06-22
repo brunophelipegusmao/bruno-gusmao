@@ -1,8 +1,13 @@
+import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/ControlPanel/appSidebar';
 import { getSessionCookieHeader } from '@/lib/server-auth';
+
+export const metadata: Metadata = {
+  manifest: '/manifest.webmanifest',
+};
 
 export default async function PrivateLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();

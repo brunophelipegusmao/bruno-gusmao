@@ -47,7 +47,6 @@ export const metadata: Metadata = {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
     apple: "/splash_screens/icon.png",
   },
-  manifest: "/manifest.webmanifest",
 };
 
 export const viewport: Viewport = {
