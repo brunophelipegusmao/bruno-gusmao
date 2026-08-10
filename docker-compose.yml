@@ -26,9 +26,11 @@ services:
     env_file: apps/api/.env
     environment:
       TZ: America/Sao_Paulo
+    ports:
+      # Só loopback: o Nginx nativo do host é quem expõe isso ao público (80/443).
+      - "127.0.0.1:3001:3001"
     networks:
       - bruno_internal   # alcança o bruno_postgres
-      - shared           # alcançável pelo nginx do outro sistema
     depends_on:
       bruno_postgres:
         condition: service_healthy
@@ -48,9 +50,11 @@ services:
     environment:
       # URL interna do container API usada no rewrite server-side de /api/auth/*
       API_URL: http://bruno_api:3001
+    ports:
+      # Só loopback: o Nginx nativo do host é quem expõe isso ao público (80/443).
+      - "127.0.0.1:3000:3000"
     networks:
       - bruno_internal   # precisa alcançar a API para o rewrite server-side
-      - shared           # alcançável pelo nginx do outro sistema
     depends_on:
       bruno_api:
         condition: service_healthy
@@ -61,8 +65,8 @@ volumes:
 networks:
   bruno_internal:
     driver: bridge
-  # Rede do outro sistema (management-process-web). O nome real é descoberto com
-  # `docker network ls` e definido em SHARED_NETWORK no arquivo .env ao lado deste compose.
-  shared:
-    external: true
-    name: ${SHARED_NETWORK:-management-process-web_internal}
+    ipam:
+      config:
+        # Subnet fixa e distinta da do evento-gamificacao (172.28.0.0/24), para as
+        # duas apps coexistirem na mesma VPS sem colisão de rede Docker.
+        - subnet: 172.29.0.0/24

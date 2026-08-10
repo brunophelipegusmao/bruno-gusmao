@@ -3,8 +3,6 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-[ -f .env ] && set -a && source .env && set +a
-
 echo "==> [1/3] Atualizando código..."
 git pull origin master
 

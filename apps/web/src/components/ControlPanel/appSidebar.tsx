@@ -8,6 +8,7 @@ import {
   FileText,
   Tag,
   Kanban,
+  PartyPopper,
   LogOut,
 } from "lucide-react";
 import {
@@ -38,6 +39,10 @@ const NAV_CONTEUDO = [
 
 const NAV_ORGANIZACAO = [
   { label: "Kanban", href: "/ControlPanel/kanban", icon: Kanban },
+];
+
+const NAV_EVENTO = [
+  { label: "Evento", href: "/ControlPanel/event", icon: PartyPopper },
 ];
 
 export function AppSidebar() {
@@ -111,6 +116,26 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {NAV_ORGANIZACAO.map(({ label, href, icon: Icon }) => (
+                <SidebarMenuItem key={href}>
+                  <SidebarMenuButton
+                    render={<Link href={href} />}
+                    isActive={isActive(href)}
+                    tooltip={label}
+                  >
+                    <Icon className="size-4" />
+                    <span>{label}</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Evento</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {NAV_EVENTO.map(({ label, href, icon: Icon }) => (
                 <SidebarMenuItem key={href}>
                   <SidebarMenuButton
                     render={<Link href={href} />}

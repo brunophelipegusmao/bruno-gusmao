@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import NavMenu from "./navMenu";
+import { EventButton } from "./eventButton";
 
 export default function Header() {
   return (
@@ -16,7 +17,10 @@ export default function Header() {
           />
         </Link>
       </div>
-      <NavMenu />
+      <div className="flex items-center gap-3">
+        <EventButton />
+        <NavMenu />
+      </div>
     </header>
   );
 }

@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import Script from "next/script";
 import Header from "@/components/Header";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { AnimatedGridPattern } from "@/components/ui/animated-grid-pattern";
+import { EventPopup } from "@/components/EventPopup";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -66,6 +68,12 @@ export default function RootLayout({
       className={cn("h-full antialiased w-full", "font-sans", geist.variable)}
     >
       <head>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9043666424226091"
+          crossOrigin="anonymous"
+          strategy="beforeInteractive"
+        />
         {/* Apple PWA splash screens */}
         {/* iPhone 17 Pro Max / 16 Pro Max — 1320×2868 @3x → 440×956 CSS */}
         <link rel="apple-touch-startup-image" href="/splash_screens/iPhone_17_Pro_Max__iPhone_16_Pro_Max_portrait.png" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
@@ -145,6 +153,7 @@ export default function RootLayout({
             // "inset-x-0 inset-y-[-30%] min-h-screen min-w-screen skew-y-12",
           )}
         />
+        <EventPopup />
         <div className="w-full sm:min-w-[85%] md:min-w-[80%] max-h-screen">
           <Header />
           {children}

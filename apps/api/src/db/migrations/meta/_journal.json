@@ -43,6 +43,13 @@
       "when": 1780411984088,
       "tag": "0005_wide_deathbird",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1786326388443,
+      "tag": "0006_optimal_bloodscream",
+      "breakpoints": true
     }
   ]
 }

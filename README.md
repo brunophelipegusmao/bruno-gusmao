@@ -298,36 +298,19 @@ O servidor emite `card-moved` com os mesmos dados para todos os clientes conecta
 
 O monorepo usa **Turborepo** para orquestrar builds com cache inteligente entre os workspaces.
 
-### Frontend — Vercel (plano gratuito)
+A aplicação roda em produção numa VPS própria (Docker + Nginx nativo + certbot),
+em `brunogusmao.dev`/`api.brunogusmao.dev`, coexistindo na mesma VPS com o
+subdomínio do evento-gamificacao. Não há deploy na Vercel/Railway.
 
-O Next.js (`apps/web`) faz deploy normalmente na Vercel.
+Ver runbook completo, incluindo bootstrap da VPS do zero e coordenação com o
+evento-gamificacao: [`deploy/DEPLOY-VPS.md`](./deploy/DEPLOY-VPS.md).
 
-**Configurações no painel da Vercel:**
-| Campo | Valor |
-|---|---|
-| Framework Preset | Next.js |
-| Root Directory | `apps/web` |
-| Build Command | `cd ../.. && pnpm build --filter=web` |
-| Install Command | `pnpm install` |
-| Output Directory | *(padrão Next.js)* |
-
-**Variáveis de ambiente na Vercel:**
+**Resumo rápido (VPS já provisionada):**
+```bash
+./scripts/vps-setup.sh   # uma única vez, numa VPS nova
+./deploy.sh               # primeiro deploy
+./update.sh                # deploys seguintes
 ```
-NEXT_PUBLIC_API_URL=https://sua-api.railway.app
-NEXT_PUBLIC_BETTER_AUTH_URL=https://sua-api.railway.app
-```
-
-### API — Railway / Render (plano gratuito)
-
-O NestJS com Fastify e WebSocket **não funciona em serverless** — precisa de um servidor persistente. Use Railway ou Render (ambos têm plano gratuito com suporte a WebSocket).
-
-**Railway:**
-1. Criar novo projeto → Deploy from GitHub
-2. Selecionar o repositório
-3. Root Directory: `apps/api`
-4. Build Command: `pnpm install && pnpm --filter api build`
-5. Start Command: `node apps/api/dist/main`
-6. Adicionar as variáveis de ambiente listadas em [Configuração](#configuração)
 
 ---
 
@@ -632,33 +615,16 @@ The server emits `card-moved` with the same data to all connected clients, updat
 
 The monorepo uses **Turborepo** to orchestrate builds with intelligent cross-workspace caching.
 
-### Frontend — Vercel (free plan)
+The app runs in production on a dedicated VPS (Docker + native Nginx + certbot)
+at `brunogusmao.dev`/`api.brunogusmao.dev`, coexisting on the same VPS with the
+evento-gamificacao subdomain. There is no Vercel/Railway deploy.
 
-The Next.js app (`apps/web`) deploys normally on Vercel.
+Full runbook, including bootstrapping the VPS from scratch and coordination
+with evento-gamificacao: [`deploy/DEPLOY-VPS.md`](./deploy/DEPLOY-VPS.md).
 
-**Vercel project settings:**
-| Field | Value |
-|---|---|
-| Framework Preset | Next.js |
-| Root Directory | `apps/web` |
-| Build Command | `cd ../.. && pnpm build --filter=web` |
-| Install Command | `pnpm install` |
-| Output Directory | *(Next.js default)* |
-
-**Environment variables on Vercel:**
+**Quick reference (VPS already provisioned):**
+```bash
+./scripts/vps-setup.sh   # once, on a fresh VPS
+./deploy.sh                # first deploy
+./update.sh                 # subsequent deploys
 ```
-NEXT_PUBLIC_API_URL=https://your-api.railway.app
-NEXT_PUBLIC_BETTER_AUTH_URL=https://your-api.railway.app
-```
-
-### API — Railway / Render (free plan)
-
-NestJS with Fastify and WebSocket **does not work on serverless** — it requires a persistent server. Use Railway or Render (both have free plans with WebSocket support).
-
-**Railway:**
-1. New project → Deploy from GitHub
-2. Select the repository
-3. Root Directory: `apps/api`
-4. Build Command: `pnpm install && pnpm --filter api build`
-5. Start Command: `node apps/api/dist/main`
-6. Add the environment variables listed in [Configuration](#configuration)
