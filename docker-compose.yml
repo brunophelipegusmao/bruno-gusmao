@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_DB: bruno_gusmao
       POSTGRES_USER: brunogusmao
-      POSTGRES_PASSWORD: "11!Abril88"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env}"
     volumes:
       - bruno_postgres_data:/var/lib/postgresql/data
     networks:
