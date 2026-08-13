@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import Script from "next/script";
 import Header from "@/components/Header";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
@@ -68,11 +67,11 @@ export default function RootLayout({
       className={cn("h-full antialiased w-full", "font-sans", geist.variable)}
     >
       <head>
-        <Script
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9043666424226091"
           crossOrigin="anonymous"
-          strategy="beforeInteractive"
         />
         {/* Apple PWA splash screens */}
         {/* iPhone 17 Pro Max / 16 Pro Max — 1320×2868 @3x → 440×956 CSS */}
