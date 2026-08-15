@@ -50,6 +50,13 @@
       "when": 1786326388443,
       "tag": "0006_optimal_bloodscream",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1786642463140,
+      "tag": "0007_add_event_customization",
+      "breakpoints": true
     }
   ]
 }

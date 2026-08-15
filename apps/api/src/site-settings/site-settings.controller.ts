@@ -28,6 +28,31 @@ const SiteSettingsSchema = {
       description:
         'Se o popup de divulgação do evento (gameficacao.brunogusmao.dev) está ativo',
     },
+    eventName: {
+      type: 'string',
+      example: 'Evento',
+      description: 'Nome do evento exibido no botão do header e no popup',
+    },
+    eventDescription: {
+      type: 'string',
+      nullable: true,
+      description: 'Texto de divulgação exibido no popup do evento',
+    },
+    eventImageUrl: {
+      type: 'string',
+      nullable: true,
+      description: 'URL da imagem exibida no popup do evento',
+    },
+    eventBgColor: {
+      type: 'string',
+      example: '#1e293b',
+      description: 'Cor de fundo do botão do header e de destaque do popup',
+    },
+    eventTextColor: {
+      type: 'string',
+      example: '#e2e8f0',
+      description: 'Cor do texto do botão do header',
+    },
   },
 };
 
@@ -40,7 +65,7 @@ export class SiteSettingsController {
   @ApiOperation({
     summary: 'Consultar configurações públicas do site',
     description:
-      'Retorna se o popup de divulgação do evento está ativo. Rota pública.',
+      'Retorna as configurações de divulgação do evento (ativo, nome, textos, imagem e cores). Rota pública.',
   })
   @ApiResponse({
     status: 200,
@@ -49,7 +74,14 @@ export class SiteSettingsController {
   })
   async findOne() {
     const row = await this.siteSettingsService.getOrCreate();
-    return { eventPopupEnabled: row.eventPopupEnabled };
+    return {
+      eventPopupEnabled: row.eventPopupEnabled,
+      eventName: row.eventName,
+      eventDescription: row.eventDescription,
+      eventImageUrl: row.eventImageUrl,
+      eventBgColor: row.eventBgColor,
+      eventTextColor: row.eventTextColor,
+    };
   }
 
   @Patch()
@@ -70,6 +102,13 @@ export class SiteSettingsController {
   @ApiResponse({ status: 401, description: 'Não autenticado' })
   async update(@Body() body: UpdateSiteSettings) {
     const row = await this.siteSettingsService.update(body);
-    return { eventPopupEnabled: row.eventPopupEnabled };
+    return {
+      eventPopupEnabled: row.eventPopupEnabled,
+      eventName: row.eventName,
+      eventDescription: row.eventDescription,
+      eventImageUrl: row.eventImageUrl,
+      eventBgColor: row.eventBgColor,
+      eventTextColor: row.eventTextColor,
+    };
   }
 }
