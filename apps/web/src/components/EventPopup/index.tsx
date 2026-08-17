@@ -30,12 +30,13 @@ export function EventPopup() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogPopup className="w-full max-w-md mx-4 sm:mx-auto overflow-hidden p-0">
-        <div className="relative w-full aspect-video">
+        <div className="relative w-full">
           <Image
             src={eventImageUrl || "/og-image.png"}
             alt={eventName}
-            fill
-            className="object-cover"
+            width={1024}
+            height={1536}
+            className="h-auto w-full"
             priority
           />
         </div>

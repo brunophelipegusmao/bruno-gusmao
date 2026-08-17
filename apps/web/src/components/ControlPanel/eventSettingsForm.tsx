@@ -195,6 +195,11 @@ export function EventSettingsForm({ initial }: { initial: EventSettings }) {
             onChange={(v) => set("eventImageUrl", v)}
             placeholder="https://..."
           />
+          <p className="text-xs text-muted-foreground">
+            Imagem vertical (proporção 2:3), ex.: 1024×1536 — é exibida em
+            torno de 400–450px de largura no popup, então uma resolução
+            maior mantém a nitidez em telas retina.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
