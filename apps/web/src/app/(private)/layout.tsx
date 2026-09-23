@@ -11,9 +11,7 @@ export const metadata: Metadata = {
 
 export default async function PrivateLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();
-  const sessionCookie =
-    cookieStore.get('__Secure-better-auth.session_token') ??
-    cookieStore.get('better-auth.session_token');
+  const sessionCookie = cookieStore.get('access_token');
 
   if (!sessionCookie) {
     redirect('/login');
@@ -22,13 +20,11 @@ export default async function PrivateLayout({ children }: { children: React.Reac
   const authHeaders = await getSessionCookieHeader();
   const base = process.env.API_URL ?? 'http://localhost:3001';
   const res = await fetch(
-    `${base}/api/auth/get-session`,
+    `${base}/api/auth/me`,
     { headers: authHeaders, cache: 'no-store' },
   );
 
-  const session = await res.json();
-
-  if (!session?.user) {
+  if (!res.ok) {
     redirect('/login');
   }
 

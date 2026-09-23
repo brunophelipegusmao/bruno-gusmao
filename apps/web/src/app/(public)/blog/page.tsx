@@ -95,7 +95,7 @@ export default async function Blog() {
           >
             POST EM DESTAQUE_
           </TypingAnimation>
-          <div className="mt-6 py-6">
+          <div className="mt-6 py-6 h-100 w-full flex items-center justify-center gap-6">
             <FeaturedCard
               image={featured.imageUrl ? { src: featured.imageUrl, alt: featured.name } : null}
               title={featured.name}

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import { Card } from "../ui/card";
-import { ShineBorder } from "../ui/shine-border";
+import { Card } from "@/components/ui/card";
+import { ShineBorder } from "@/components/ui/shine-border";
 import { CommonBadge } from "./commonBadge";
 
 export interface BadgeData {
@@ -25,11 +25,10 @@ export default function FeaturedCard({
   children,
 }: FeaturedCardProps) {
   return (
-    <Card className="relative w-full flex flex-col md:flex-row overflow-hidden pt-0 bg-secondary">
+    <Card className="relative w-[50%] h-full overflow-hidden p-0 gap-0 bg-secondary">
       <ShineBorder shineColor={["#e2e8f0", "#818cf8", "#c4b5fd"]} className="z-40" />
 
-      <div className="relative w-full md:w-1/2 shrink-0 aspect-video md:aspect-auto">
-        <div className="absolute inset-0 z-10 bg-black/20" />
+      <div className="absolute inset-0">
         {image ? (
           <img
             src={image.src}
@@ -41,12 +40,13 @@ export default function FeaturedCard({
             <span className="font-heading text-primary/30 text-4xl">IMG_</span>
           </div>
         )}
+        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
       </div>
 
-      <div className="flex flex-col justify-between gap-4 p-6 flex-1">
-        <div className="flex flex-col gap-3">
-          <h2 className="text-primary font-semibold text-lg leading-snug">{title}</h2>
-          <p className="text-muted-foreground text-sm">{description}</p>
+      <div className="relative flex flex-col justify-end gap-3 h-full p-6">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-white font-semibold text-lg leading-snug line-clamp-1">{title}</h2>
+          <p className="text-white/80 text-sm line-clamp-3">{description}</p>
           {badges.length > 0 && (
             <div className="flex flex-wrap gap-1.5 pt-1">
               {badges.map((b) => (
@@ -56,7 +56,7 @@ export default function FeaturedCard({
           )}
         </div>
         {children && (
-          <div className="flex items-center justify-center gap-3">{children}</div>
+          <div className="flex items-center gap-3">{children}</div>
         )}
       </div>
     </Card>

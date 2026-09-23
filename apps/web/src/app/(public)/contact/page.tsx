@@ -20,14 +20,14 @@ const contactLinks = [
   {
     Icon: Mail,
     label: "E-mail",
-    value: "bruno.mulim.prog@gmail.com",
-    href: "mailto:bruno.mulim.prog@gmail.com",
+    value: "brunomulim.dev@gmail.com",
+    href: "mailto:brunomulim.dev@gmail.com",
   },
   {
     Icon: Code2,
     label: "GitHub",
-    value: "github.com/brunophelipegusmao",
-    href: "https://github.com/brunophelipegusmao",
+    value: "github.com/brunogusmaodev",
+    href: "https://github.com/brunogusmaodev",
   },
   {
     Icon: Briefcase,

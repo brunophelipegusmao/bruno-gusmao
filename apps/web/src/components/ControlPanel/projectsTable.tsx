@@ -134,7 +134,7 @@ export function ProjectsTable({
         });
         if (res.ok) {
           const created = await res.json();
-          setProjects((prev) => [...prev, created[0]]);
+          setProjects((prev) => [...prev, Array.isArray(created) ? created[0] : created]);
         }
       }
       setOpen(false);

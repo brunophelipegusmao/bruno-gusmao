@@ -100,7 +100,7 @@ export default async function Projects() {
           >
             PROJETO EM DESTAQUE_
           </TypingAnimation>
-          <div className="mt-6 py-6">
+          <div className="mt-6 py-6 h-100 w-full flex items-center justify-center gap-6">
             <FeaturedCard
               image={featured.image ? { src: featured.image, alt: featured.name } : null}
               title={featured.name}

@@ -5,3 +5,4 @@ export * from './projects';
 export * from './kanban-tasks';
 export * from './ralations';
 export * from './site-settings';
+export * from './todos';

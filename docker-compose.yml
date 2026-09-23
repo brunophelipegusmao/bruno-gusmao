@@ -4,7 +4,9 @@ services:
     container_name: bruno_postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: bruno_gusmao
+      # Banco do apps/api-java (Spring/Flyway) — separado do que o Nest
+      # (desativado) usava. Ver docs/java-migration/00-arquitetura.md.
+      POSTGRES_DB: bruno_gusmao_java
       POSTGRES_USER: brunogusmao
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env}"
     volumes:
@@ -12,7 +14,7 @@ services:
     networks:
       - bruno_internal
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U brunogusmao -d bruno_gusmao"]
+      test: ["CMD-SHELL", "pg_isready -U brunogusmao -d bruno_gusmao_java"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -20,17 +22,22 @@ services:
   bruno_api:
     build:
       context: .
-      dockerfile: Dockerfile.api
+      dockerfile: Dockerfile.api-java
     container_name: bruno_api
     restart: unless-stopped
-    env_file: apps/api/.env
+    env_file: apps/api-java/.env
     environment:
       TZ: America/Sao_Paulo
     ports:
       # Só loopback: o Nginx nativo do host é quem expõe isso ao público (80/443).
       - "127.0.0.1:3001:3001"
     networks:
-      - bruno_internal   # alcança o bruno_postgres
+      bruno_internal:
+        # Alias sem underscore: o Tomcat do Spring Boot valida o header Host
+        # de forma estrita e rejeita "_" (não é válido em domain name), então
+        # chamadas server-side do Next não podem usar o nome do container.
+        aliases:
+          - api-internal
     depends_on:
       bruno_postgres:
         condition: service_healthy
@@ -40,21 +47,24 @@ services:
       context: .
       dockerfile: Dockerfile.web
       args:
-        # Auth passa por brunogusmao.dev (rewrite Next.js → API interna)
-        NEXT_PUBLIC_API_URL: https://brunogusmao.dev
+        # URLs públicas do backend Java — sem rewrite de auth (removido junto
+        # com o BetterAuth), o cookie httpOnly do Java funciona cross-subdomain
+        # via SameSite=Lax (mesmo site: brunogusmao.dev).
+        NEXT_PUBLIC_API_URL: https://api.brunogusmao.dev
         NEXT_PUBLIC_WS_URL: wss://api.brunogusmao.dev
-        NEXT_PUBLIC_BETTER_AUTH_URL: https://brunogusmao.dev
-        API_URL: http://bruno_api:3001
+        API_URL: http://api-internal:3001
     container_name: bruno_web
     restart: unless-stopped
     environment:
-      # URL interna do container API usada no rewrite server-side de /api/auth/*
-      API_URL: http://bruno_api:3001
+      # URL interna do container API usada nas chamadas server-side (Server Components).
+      # Usa o alias "api-internal" (sem underscore) em vez do nome do container
+      # bruno_api — o Tomcat rejeita "_" no header Host (400 em toda chamada).
+      API_URL: http://api-internal:3001
     ports:
       # Só loopback: o Nginx nativo do host é quem expõe isso ao público (80/443).
       - "127.0.0.1:3000:3000"
     networks:
-      - bruno_internal   # precisa alcançar a API para o rewrite server-side
+      - bruno_internal   # precisa alcançar a API pra fetch server-side
     depends_on:
       bruno_api:
         condition: service_healthy

@@ -1,0 +1,70 @@
+server:
+  port: ${PORT:3001}
+
+spring:
+  application:
+    name: api-java
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/bruno_gusmao_java}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:postgres}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            # Defaults não-vazios de propósito (não são segredos reais): o
+            # spring-boot-starter-oauth2-client valida client-id/secret != "" ao montar o
+            # ClientRegistrationRepository, e falha o boot inteiro (inclusive em testes que
+            # não têm nada a ver com login OAuth2) se ficarem vazios. Em produção,
+            # GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET reais sempre sobrescrevem isso.
+            client-id: ${GOOGLE_CLIENT_ID:dev-placeholder-client-id}
+            client-secret: ${GOOGLE_CLIENT_SECRET:dev-placeholder-client-secret}
+            # Sem "openid" de propósito: com esse escopo o Spring Security troca o fluxo pra
+            # OIDC, cujo ponto de extensão de usuário é OidcUserService, não
+            # DefaultOAuth2UserService (a classe pedida pela spec do módulo Auth — ver
+            # AllowedEmailsOAuth2UserService). "email,profile" mantém OAuth2 "puro" e o
+            # userinfo endpoint do Google já devolve email/name/picture normalmente.
+            scope: email,profile
+
+# Configuração própria da aplicação (fora do namespace spring.*), lida via AppSecurityProperties.
+app:
+  security:
+    # Lista de e-mails permitidos a logar, separados por vírgula — equivalente ao
+    # ALLOWED_EMAIL do apps/api (Nest), já pensado para 2+ usuários desde o início.
+    allowed-emails: ${ALLOWED_EMAILS:}
+    # Segredo HMAC (HS256) usado para assinar/verificar o JWT próprio emitido após o
+    # login Google — papel equivalente ao BETTER_AUTH_SECRET do Nest. Mínimo 32 bytes
+    # (HS256 exige isso; o default abaixo tem 43 caracteres só pra não quebrar o boot em
+    # dev/teste — JWT_SECRET real e mantido em segredo sempre sobrescreve em produção).
+    jwt-secret: ${JWT_SECRET:dev-placeholder-jwt-secret-change-me-in-prod}
+    jwt-expiration-days: ${JWT_EXPIRATION_DAYS:7}
+    # Nome do cookie httpOnly onde o JWT é entregue ao browser.
+    jwt-cookie-name: ${JWT_COOKIE_NAME:access_token}
+    # Domain do cookie do JWT. Vazio (default) = host-only, só serve pra quem setou o
+    # cookie — funciona em dev (localhost) mas QUEBRA em prod, onde a API fica em
+    # api.brunogusmao.dev e o front em brunogusmao.dev: sem isso o cookie nunca chega ao
+    # front e o PrivateLayout manda de volta pro /login mesmo com login OK. Em prod, setar
+    # COOKIE_DOMAIN=brunogusmao.dev (cobre apex + api./www.).
+    cookie-domain: ${COOKIE_DOMAIN:}
+  # Origem do frontend Next.js — usada em CORS e no redirect pós-login OAuth2.
+  web-url: ${WEB_URL:http://localhost:3000}
+
+springdoc:
+  swagger-ui:
+    path: /docs
+  api-docs:
+    path: /api-docs

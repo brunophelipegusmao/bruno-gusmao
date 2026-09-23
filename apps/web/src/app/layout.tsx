@@ -3,7 +3,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { AnimatedGridPattern } from "@/components/ui/animated-grid-pattern";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { EventPopup } from "@/components/EventPopup";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
@@ -64,6 +64,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
+      suppressHydrationWarning
       className={cn("h-full antialiased w-full", "font-sans", geist.variable)}
     >
       <head>
@@ -141,22 +142,14 @@ export default function RootLayout({
         <link rel="apple-touch-startup-image" href="/splash_screens/8.3__iPad_Mini_portrait.png" media="(device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
         <link rel="apple-touch-startup-image" href="/splash_screens/8.3__iPad_Mini_landscape.png" media="(device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" />
       </head>
-      <body className="min-h-screen flex flex-col items-center">
-        <AnimatedGridPattern
-          numSquares={30}
-          maxOpacity={0.1}
-          duration={3}
-          repeatDelay={1}
-          className={cn(
-            "mask-[radial-gradient(800px_circle_at_center,white,transparent)]",
-            // "inset-x-0 inset-y-[-30%] min-h-screen min-w-screen skew-y-12",
-          )}
-        />
-        <EventPopup />
-        <div className="w-full sm:min-w-[85%] md:min-w-[80%] max-h-screen">
-          <Header />
-          {children}
-        </div>
+      <body className="min-h-screen flex flex-col items-center px-30">
+        <ThemeProvider>
+          <EventPopup />
+          <div className="w-full sm:min-w-[85%] md:min-w-[80%] max-h-screen">
+            <Header />
+            {children}
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

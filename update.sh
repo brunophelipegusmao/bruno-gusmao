@@ -9,8 +9,8 @@ git pull origin master
 echo "==> [2/3] Build das imagens..."
 docker compose build bruno_api bruno_web
 
-echo "==> [3/3] Migrations + restart..."
-docker compose run --rm bruno_api pnpm db:migrate
+echo "==> [3/3] Restart..."
+# Migrations (Flyway) rodam automaticamente no boot do apps/api-java.
 docker compose up -d bruno_api bruno_web
 
 docker compose ps

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.1.1</version>
+    <relativePath/>
+  </parent>
+
+  <groupId>dev.brunogusmao</groupId>
+  <artifactId>api-java</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+  <name>api-java</name>
+  <description>Portfolio API — Spring Boot learning port of apps/api (NestJS)</description>
+
+  <properties>
+    <java.version>21</java.version>
+    <springdoc-openapi.version>3.0.3</springdoc-openapi.version>
+    <!-- 12.4.0, não a versão mais recente do Flyway (13.x) — é a que
+         spring-boot-dependencies:4.1.1 gerencia/testa internamente. Um override
+         pra 13.7.0 aqui causou FlywayAutoConfiguration falhando silenciosamente
+         (nem aparecia no relatório de condições, Hibernate validava contra schema
+         vazio) — mesma categoria de erro do testcontainers.version abaixo: deixar
+         a versão fixada pelo BOM do parent evita esse tipo de incompatibilidade. -->
+    <flyway.version>12.4.0</flyway.version>
+    <!-- Mantida em sincronia com o que spring-boot-dependencies:4.1.1 usa
+         internamente (2.0.5) — não abaixar pra 1.x: um override anterior pra
+         1.21.3 causou "Docker API version 1.32 rejeitada" contra Docker Engine 29.
+         A property de mesmo nome do parent não é herdada de forma confiável dentro
+         do <dependencyManagement> deste pom (testado — Maven falha ao resolver
+         ${testcontainers.version} nesse contexto mesmo com spring-boot-starter-parent
+         como <parent>), então é fixada aqui explicitamente. -->
+    <testcontainers.version>2.0.5</testcontainers.version>
+  </properties>
+
+  <dependencies>
+    <!-- Web -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <!-- Persistence -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- Migrations: no Spring Boot 4, FlywayAutoConfiguration foi extraída pra este
+         starter dedicado (parte da mesma modularização que moveu @AutoConfigureMockMvc
+         pra spring-boot-starter-webmvc-test) — declarar só flyway-core/flyway-database-postgresql
+         direto NÃO ativa a autoconfiguração, as migrations simplesmente não rodam e
+         nem aparecem no relatório de condições (raiz de um bug real que já causou
+         "Schema validation: missing table" nos testes deste projeto). Traz
+         flyway-core + flyway-database-postgresql transitivamente, nas versões certas. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-flyway</artifactId>
+    </dependency>
+    <!-- spring-boot-starter-flyway só traz flyway-core transitivamente — o suporte
+         a Postgres específico (PostgreSQLConfigurationExtension) precisa deste
+         artefato à parte, senão FlywayAutoConfiguration falha com "Unsupported
+         Database: PostgreSQL" mesmo com o starter presente. -->
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-database-postgresql</artifactId>
+    </dependency>
+
+    <!-- Auth: Google OAuth2 login + JWT resource server (self-issued token) -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+    </dependency>
+    <!-- Nimbus (com.nimbusds:nimbus-jose-jwt) comes transitively via spring-security-oauth2-jose,
+         pulled in by the resource-server starter above — used both to issue our self-signed JWT
+         (JwtService) and to verify it (NimbusJwtDecoder bean in SecurityConfig). No extra JWT
+         library needed. -->
+
+    <!-- Validation -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+
+    <!-- WebSocket (Kanban + Todos real-time broadcast) -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-websocket</artifactId>
+    </dependency>
+
+    <!-- API docs -->
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>${springdoc-openapi.version}</version>
+    </dependency>
+
+    <!-- Test -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- Spring Boot 4 extraiu @AutoConfigureMockMvc/MockMvc de spring-boot-test-autoconfigure
+         pra este starter separado (parte da modularização MVC/WebFlux do Boot 4) -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webmvc-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-testcontainers</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- Testcontainers 2.x renomeou os artefatos de módulo com prefixo
+         "testcontainers-" (os nomes antigos sem prefixo, ex. org.testcontainers:junit-jupiter,
+         pararam em 1.21.4 e não existem em 2.0.5 — confirmado, causava 404).
+         Versão pinada diretamente (não via import de testcontainers-bom em
+         dependencyManagement — essa forma causou um ProjectBuildingException
+         de 'version is missing' neste ambiente/versão do Maven). -->
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers-junit-jupiter</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers-postgresql</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <!-- Todos os testes de integração deste projeto seguem a convenção de nome
+           *ControllerIT.java / *IT.java (Testcontainers + Postgres real) — esse sufixo é
+           o padrão que o Failsafe reconhece por default, NÃO o Surefire (que só roda
+           *Test.java/*Tests.java por padrão). Sem este plugin, "mvn test" só executava
+           AuthIntegrationTest (o único nome terminado em "Test") e ignorava silenciosamente
+           todos os outros 6 módulos — bug real descoberto nesta sessão. Rodar com
+           "./mvnw verify" (não só "test") para os *IT.java serem executados. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

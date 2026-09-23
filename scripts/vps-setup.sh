@@ -80,14 +80,14 @@ else
   log "certbot já instalado, pulando"
 fi
 
-# ===== 5. apps/api/.env (produção) =====
-ENV_FILE="$REPO_DIR/apps/api/.env"
+# ===== 5. apps/api-java/.env (produção) =====
+ENV_FILE="$REPO_DIR/apps/api-java/.env"
 if [ ! -f "$ENV_FILE" ]; then
   log "Criando $ENV_FILE a partir do template"
-  cp "$REPO_DIR/apps/api/.env.production.example" "$ENV_FILE"
+  cp "$REPO_DIR/apps/api-java/.env.production.example" "$ENV_FILE"
 
-  BETTER_AUTH_SECRET_GENERATED="$(openssl rand -base64 32)"
-  sed -i "s#^BETTER_AUTH_SECRET=.*#BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET_GENERATED}#" "$ENV_FILE"
+  JWT_SECRET_GENERATED="$(openssl rand -base64 32)"
+  sed -i "s#^JWT_SECRET=.*#JWT_SECRET=${JWT_SECRET_GENERATED}#" "$ENV_FILE"
   chmod 600 "$ENV_FILE"
 else
   log "$ENV_FILE já existe, não sobrescrevendo"
@@ -121,8 +121,8 @@ echo "Env file:  $ENV_FILE"
 echo
 echo "Falta antes do primeiro deploy:"
 echo "  1. Confirmar DNS: ${DOMAIN_WEB}, www.${DOMAIN_WEB}, ${DOMAIN_API} -> IP desta VPS"
-echo "  2. Preencher DATABASE_URL (senha do Postgres) / GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET / ALLOWED_EMAIL em $ENV_FILE"
-echo "     (redirect URI no Google Console: https://${DOMAIN_API}/api/auth/callback/google)"
+echo "  2. Preencher DATABASE_PASSWORD (igual ao POSTGRES_PASSWORD do .env raiz) / GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET / ALLOWED_EMAILS em $ENV_FILE"
+echo "     (redirect URI no Google Console: https://${DOMAIN_API}/login/oauth2/code/google)"
 if [ "${NEEDS_RELOGIN:-0}" = "1" ]; then
   echo "  3. Sair e logar de novo (ou 'newgrp docker') para o grupo docker valer nesta sessão"
 fi

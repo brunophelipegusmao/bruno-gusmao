@@ -1,0 +1,1 @@
+- [bruno-gusmao Java backend](bruno-gusmao-java-backend.md) — prod usa Spring (api-java), não Nest; repo em brunogusmaodev

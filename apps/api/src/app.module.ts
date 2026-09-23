@@ -10,6 +10,7 @@ import { PostsModule } from './posts/posts.module';
 import { KanbanModule } from './kanban/kanban.module';
 import { KanbanTasksModule } from './kanban-tasks/kanban-tasks.module';
 import { SiteSettingsModule } from './site-settings/site-settings.module';
+import { TodosModule } from './todos/todos.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { SiteSettingsModule } from './site-settings/site-settings.module';
     KanbanModule,
     KanbanTasksModule,
     SiteSettingsModule,
+    TodosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

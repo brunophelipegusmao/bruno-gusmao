@@ -7,6 +7,12 @@ import {
 import type { FastifyRequest } from 'fastify';
 import { auth } from './auth';
 
+declare module 'fastify' {
+  interface FastifyRequest {
+    user?: { id: string; email: string };
+  }
+}
+
 @Injectable()
 export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -19,6 +25,8 @@ export class AuthGuard implements CanActivate {
     if (!session?.user) {
       throw new UnauthorizedException();
     }
+
+    req.user = { id: session.user.id, email: session.user.email };
 
     return true;
   }

@@ -8,6 +8,7 @@ import {
   FileText,
   Tag,
   Kanban,
+  ListTodo,
   PartyPopper,
   LogOut,
 } from "lucide-react";
@@ -39,6 +40,7 @@ const NAV_CONTEUDO = [
 
 const NAV_ORGANIZACAO = [
   { label: "Kanban", href: "/ControlPanel/kanban", icon: Kanban },
+  { label: "Todos", href: "/ControlPanel/todos", icon: ListTodo },
 ];
 
 const NAV_EVENTO = [

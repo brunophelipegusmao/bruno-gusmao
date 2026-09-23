@@ -108,7 +108,7 @@ export function PostsTable({
         });
         if (res.ok) {
           const created = await res.json();
-          setPosts((prev) => [...prev, created[0]]);
+          setPosts((prev) => [...prev, Array.isArray(created) ? created[0] : created]);
         }
       }
       setOpen(false);

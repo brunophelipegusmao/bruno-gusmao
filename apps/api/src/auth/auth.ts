@@ -14,7 +14,9 @@ export const auth = betterAuth({
   }),
 
   emailAndPassword: {
-    enabled: true,
+    // Login por email/senha só fica disponível fora de produção — em produção
+    // o login continua exclusivamente via Google, sem alteração de comportamento.
+    enabled: process.env.NODE_ENV !== 'production',
   },
 
   socialProviders: {
@@ -28,16 +30,19 @@ export const auth = betterAuth({
     user: {
       create: {
         before: async (newUser) => {
-          const allowedEmail = process.env.ALLOWED_EMAIL?.toLowerCase().trim();
+          const allowedEmails = (process.env.ALLOWED_EMAIL ?? '')
+            .split(',')
+            .map((email) => email.toLowerCase().trim())
+            .filter(Boolean);
           const incomingEmail = newUser.email?.toLowerCase().trim();
 
-          console.log('[Auth] create.before → incoming:', incomingEmail, '| allowed:', allowedEmail);
+          console.log('[Auth] create.before → incoming:', incomingEmail, '| allowed:', allowedEmails);
 
-          if (!allowedEmail) {
+          if (allowedEmails.length === 0) {
             throw new Error('ALLOWED_EMAIL não configurado.');
           }
 
-          if (incomingEmail !== allowedEmail) {
+          if (!incomingEmail || !allowedEmails.includes(incomingEmail)) {
             throw new Error('Acesso negado.');
           }
         },

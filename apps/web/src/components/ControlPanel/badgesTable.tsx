@@ -97,7 +97,7 @@ export function BadgesTable({ initialBadges }: { initialBadges: Badge[] }) {
         });
         if (res.ok) {
           const created = await res.json();
-          setBadges((prev) => [...prev, created[0]]);
+          setBadges((prev) => [...prev, Array.isArray(created) ? created[0] : created]);
         }
       }
       setOpen(false);

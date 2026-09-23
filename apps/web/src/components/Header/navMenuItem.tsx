@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { HyperText } from "../ui/hyper-text";
+import { HyperText } from "@/components/ui/hyper-text";
 
 type NavMenuItemProps = {
   href: string;

@@ -1,0 +1,21 @@
+# syntax=docker/dockerfile:1
+# Build do backend Spring Boot (apps/api-java) — projeto Maven autocontido,
+# fora do workspace pnpm (sem relação com Dockerfile.api/Dockerfile.web).
+
+FROM maven:3.9-eclipse-temurin-21 AS build
+WORKDIR /app
+COPY apps/api-java/pom.xml .
+RUN mvn -B -q dependency:go-offline
+COPY apps/api-java/src ./src
+# Testes de integração usam Testcontainers (Docker-in-Docker) — não rodam
+# dentro do build da imagem, só localmente/CI com Docker disponível.
+RUN mvn -B -q clean package -DskipTests
+
+FROM eclipse-temurin:21-jre-alpine AS runner
+ENV TZ=America/Sao_Paulo
+WORKDIR /app
+COPY --from=build /app/target/api-java-0.1.0-SNAPSHOT.jar app.jar
+EXPOSE 3001
+HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=5 \
+  CMD wget -qO- http://localhost:3001/api/badges >/dev/null || exit 1
+ENTRYPOINT ["java", "-jar", "app.jar"]

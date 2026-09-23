@@ -40,7 +40,7 @@ ssh sua-vps
 git clone <url-do-repo-bruno-gusmao> ~/apps/bruno-gusmao
 cd ~/apps/bruno-gusmao
 LETSENCRYPT_EMAIL=bruno.mulim.prog@gmail.com ./scripts/vps-setup.sh
-# preencher DATABASE_URL (senha) / GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET / ALLOWED_EMAIL em apps/api/.env
+# preencher DATABASE_PASSWORD (igual ao POSTGRES_PASSWORD do .env raiz) / GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET / ALLOWED_EMAILS em apps/api-java/.env
 ./deploy.sh
 
 # 2) evento-gamificacao
@@ -55,7 +55,7 @@ LETSENCRYPT_EMAIL=bruno.mulim.prog@gmail.com ./scripts/vps-setup.sh
 
 Redirect URIs a cadastrar no Google Console:
 
-- `https://api.brunogusmao.dev/api/auth/callback/google` (bruno-gusmao)
+- `https://api.brunogusmao.dev/login/oauth2/code/google` (bruno-gusmao)
 - `https://gameficacao.brunogusmao.dev/api/auth/callback/google` (evento-gamificacao)
 
 ## 4. Verificação

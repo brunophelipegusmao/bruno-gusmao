@@ -232,7 +232,7 @@ export function KanbanBoard({ initialTasks }: { initialTasks: KanbanTask[] }) {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    const ws = new WebSocket(WS_URL);
+    const ws = new WebSocket(`${WS_URL}/ws/kanban`);
     wsRef.current = ws;
     ws.onmessage = (event) => {
       try {
@@ -295,8 +295,8 @@ export function KanbanBoard({ initialTasks }: { initialTasks: KanbanTask[] }) {
         }),
       });
       if (res.ok) {
-        const [created] = await res.json();
-        setTasks((prev) => [...prev, created]);
+        const data = await res.json();
+        setTasks((prev) => [...prev, Array.isArray(data) ? data[0] : data]);
         setCreateOpen(false);
       }
     } finally {
